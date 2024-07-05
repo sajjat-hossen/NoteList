@@ -1,0 +1,30 @@
+﻿@using NoteList.DomainLayer.Models
+@model List<Note>
+
+@{
+    ViewBag.Title = "All Notes";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Notes</h1>
+    <div class="mb-4">
+        <a class="btn btn-primary" asp-action="Create">Create Note</a>
+    </div>
+    <div class="row">
+        @foreach (var note in Model)
+        {
+            <div class="col-md-4">
+                <div class="card note-card">
+                    <div class="card-header">
+                        <h5 class="card-title">@note.Title</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@note.Description</p>
+                        <a class="btn btn-warning btn-space" asp-action="Edit" asp-route-id="@note.Id">Edit</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@note.Id">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
