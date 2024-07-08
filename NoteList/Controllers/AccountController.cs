@@ -26,12 +26,14 @@ namespace NoteList.Controllers
         #region Register
 
         [HttpGet]
+
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -60,6 +62,7 @@ namespace NoteList.Controllers
         #region Login
 
         [HttpGet]
+
         public IActionResult Login()
         {
             return View();
@@ -67,6 +70,7 @@ namespace NoteList.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -91,9 +95,11 @@ namespace NoteList.Controllers
         #region Logout
 
         [HttpPost]
+
         public async Task<IActionResult> Logout()
         {
             await _accountService.SignOutAccountAsync();
+
             return RedirectToAction("index", "home");
         }
 

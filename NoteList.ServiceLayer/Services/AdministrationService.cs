@@ -13,12 +13,22 @@ namespace NoteList.ServiceLayer.Services
 {
     public class AdministrationService : IAdministrationService
     {
+        #region Fileds
+
         private readonly UserManager<IdentityUser> _userManager;
+
+        #endregion
+
+        #region Constructor
 
         public AdministrationService(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }
+
+        #endregion
+
+        #region GetAllUser
 
         public IEnumerable<IdentityUser> GetAllUser()
         {
@@ -27,6 +37,10 @@ namespace NoteList.ServiceLayer.Services
             return users;
         }
 
+        #endregion
+
+        #region FindUserByIdAsync
+
         public async Task<IdentityUser> FindUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -34,12 +48,20 @@ namespace NoteList.ServiceLayer.Services
             return user;
         }
 
+        #endregion
+
+        #region GetUserClaimsAsync
+
         public async Task<IEnumerable<Claim>> GetUserClaimsAsync(IdentityUser user)
         {
             var claims = await _userManager.GetClaimsAsync(user);
 
             return claims;
         }
+
+        #endregion
+
+        #region GetUserClaimsModel
 
         public async Task<UserClaimViewModel> GetUserClaimsModel(IdentityUser user)
         {
@@ -71,6 +93,10 @@ namespace NoteList.ServiceLayer.Services
             return model;
         }
 
+        #endregion
+
+        #region UpdateUserClaimsAsync
+
         public async Task<bool> UpdateUserClaimsAsync(UserClaimViewModel model)
         {
             var user = await FindUserByIdAsync(model.Id);
@@ -98,5 +124,7 @@ namespace NoteList.ServiceLayer.Services
 
             return true;
         }
+
+        #endregion
     }
 }

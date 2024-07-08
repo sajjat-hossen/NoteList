@@ -24,6 +24,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+    options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+    options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
+});
+
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<IAccountService, AccountService>();

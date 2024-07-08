@@ -37,12 +37,15 @@ namespace NoteList.Controllers
         #region Create
 
         [HttpGet]
+        [Authorize(Policy = "CreateRolePolicy")]
+
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = "CreateRolePolicy")]
         public async Task<IActionResult> Create(Note note)
         {
             if (ModelState.IsValid)
@@ -60,6 +63,8 @@ namespace NoteList.Controllers
         #region Delete
 
         [HttpGet]
+        [Authorize(Policy = "DeleteRolePolicy")]
+
         public async Task<IActionResult> Delete(int id)
         {
             if (id == 0)
@@ -78,6 +83,8 @@ namespace NoteList.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "DeleteRolePolicy")]
+
         public async Task<IActionResult> DeleteConfirm(int id)
         {
             var note = await _noteService.GetNoteByIdAsync(id);
@@ -98,6 +105,8 @@ namespace NoteList.Controllers
         #region Edit
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
+
         public async Task<IActionResult> Edit(int id)
         {
             if (id == 0)
@@ -116,6 +125,8 @@ namespace NoteList.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
+
         public async Task<IActionResult> Edit(Note note)
         {
             if (ModelState.IsValid)

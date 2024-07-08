@@ -39,6 +39,7 @@ namespace NoteList.Controllers
         #region ManagePermissions
 
         [HttpGet]
+
         public async Task<IActionResult> ManagePermissions(string id)
         {
             var user = await _administrationService.FindUserByIdAsync(id);

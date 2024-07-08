@@ -13,11 +13,8 @@ namespace NoteList.ServiceLayer.IServices
     {
         IEnumerable<IdentityUser> GetAllUser();
         Task<IdentityUser> FindUserByIdAsync(string id);
-
         Task<IEnumerable<Claim>> GetUserClaimsAsync(IdentityUser user);
-
         Task<UserClaimViewModel> GetUserClaimsModel(IdentityUser user);
-
         Task<bool> UpdateUserClaimsAsync(UserClaimViewModel model);
     }
 }
