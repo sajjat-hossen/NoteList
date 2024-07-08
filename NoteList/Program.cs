@@ -31,6 +31,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
 });
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+
+    options.AccessDeniedPath = "/Home/AccessDenied";
+});
+
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
