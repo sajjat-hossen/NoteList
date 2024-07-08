@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NoteList.DomainLayer.Data;
+using System.Linq.Expressions;
 
 namespace NoteList.RepositoryLayer.Repositories
 {
@@ -42,9 +43,9 @@ namespace NoteList.RepositoryLayer.Repositories
 
         #region GetEntityByIdAsync
 
-        public async Task<TEntity> GetEntityByIdAsync(int id)
+        public async Task<TEntity> GetEntityByIdAsync(Expression<Func<TEntity, bool>> filters)
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.Where(filters).FirstOrDefaultAsync();
         }
 
         #endregion
