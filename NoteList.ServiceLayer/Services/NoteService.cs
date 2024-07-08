@@ -57,14 +57,22 @@ namespace NoteList.ServiceLayer.Services
 
         #endregion
 
+        #region RemoveNoteAsync
+
         public async Task RemoveNoteAsync(Note note)
         {
             await _noteRepository.RemoveEntityAsync(note);
         }
 
+        #endregion
+
+        #region UpdateNoteAsync
+
         public async Task UpdateNoteAsync(Note note)
         {
             await _noteRepository.UpdateEntityAsync(note);
         }
+
+        #endregion
     }
 }

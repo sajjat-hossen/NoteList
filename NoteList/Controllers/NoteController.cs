@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NoteList.DomainLayer.Models;
 using NoteList.ServiceLayer.IServices;
 
 namespace NoteList.Controllers
 {
+    [Authorize]
     public class NoteController : Controller
     {
         #region Fields
