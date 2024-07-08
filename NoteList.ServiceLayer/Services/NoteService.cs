@@ -42,16 +42,29 @@ namespace NoteList.ServiceLayer.Services
         public async Task CreateNoteAsync(Note note)
         {
             await _noteRepository.AddEntityAsync(note);
-            await _noteRepository.SaveNoteAsync();
         }
 
         #endregion
+
+        #region GetNoteByIdAsync
 
         public async Task<Note> GetNoteByIdAsync(int id)
         {
             var note = await _noteRepository.GetEntityByIdAsync(i => i.Id == id);
 
             return note;
+        }
+
+        #endregion
+
+        public async Task RemoveNoteAsync(Note note)
+        {
+            await _noteRepository.RemoveEntityAsync(note);
+        }
+
+        public async Task UpdateNoteAsync(Note note)
+        {
+            await _noteRepository.UpdateEntityAsync(note);
         }
     }
 }

@@ -28,6 +28,7 @@ namespace NoteList.RepositoryLayer.Repositories
         public async Task AddEntityAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion
@@ -45,16 +46,28 @@ namespace NoteList.RepositoryLayer.Repositories
 
         public async Task<TEntity> GetEntityByIdAsync(Expression<Func<TEntity, bool>> filters)
         {
-            return await _dbSet.Where(filters).FirstOrDefaultAsync();
+            var query = _dbSet.Where(filters);
+            return await query.FirstOrDefaultAsync();
         }
 
         #endregion
 
         #region RemoveEntity
 
-        public void RemoveEntity(TEntity entity)
+        public async Task RemoveEntityAsync(TEntity entity)
         {
             _dbSet.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region UpdateEntityAsync
+
+        public async Task UpdateEntityAsync(TEntity entity)
+        {
+            _dbSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion

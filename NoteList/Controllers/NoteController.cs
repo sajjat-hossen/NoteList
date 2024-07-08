@@ -32,6 +32,8 @@ namespace NoteList.Controllers
 
         #endregion
 
+        #region Create
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -51,21 +53,79 @@ namespace NoteList.Controllers
             return View();
         }
 
-        //[HttpGet]
-        //public IActionResult Delete(int id)
-        //{
-        //    if (id == 0) {
-        //        return NotFound();
-        //    }
+        #endregion
 
-        //    var note = _noteService.GetNoteByIdAsync(id);
+        #region Delete
 
-        //    if (note == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
 
-        //    return View(note);
-        //}
+            var note = await _noteService.GetNoteByIdAsync(id);
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            return View(note);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var note = await _noteService.GetNoteByIdAsync(id);
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            await _noteService.RemoveNoteAsync(note);
+
+            return RedirectToAction("Index");
+
+        }
+
+        #endregion
+
+        #region Edit
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var note =(Note) await _noteService.GetNoteByIdAsync(id);
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            return View(note);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Note note)
+        {
+            if (ModelState.IsValid)
+            {
+                await _noteService.UpdateNoteAsync(note);
+
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        #endregion
     }
 }

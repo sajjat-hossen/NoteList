@@ -7,6 +7,7 @@ namespace NoteList.RepositoryLayer.Repositories
         Task<List<TEntity>> GetAllEntityFromDbAsync();
         Task<TEntity> GetEntityByIdAsync(Expression<Func<TEntity, bool>> filters);
         Task AddEntityAsync(TEntity entity);
-        void RemoveEntity(TEntity entity);
+        Task RemoveEntityAsync(TEntity entity);
+        Task UpdateEntityAsync(TEntity entity);
     }
 }

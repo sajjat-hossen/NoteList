@@ -5,7 +5,5 @@ namespace NoteList.RepositoryLayer.IRepositories
 {
     public interface INoteRepository : IRepository<Note>
     {
-        void UpdateNote(Note note);
-        Task SaveNoteAsync();
     }
 }

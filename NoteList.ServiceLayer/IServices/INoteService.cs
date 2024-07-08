@@ -12,5 +12,7 @@ namespace NoteList.ServiceLayer.IServices
         Task<List<Note>> GetAllNoteAsync();
         Task CreateNoteAsync(Note note);
         Task<Note> GetNoteByIdAsync(int id);
+        Task RemoveNoteAsync(Note note);
+        Task UpdateNoteAsync(Note note);
     }
 }

@@ -21,22 +21,5 @@ namespace NoteList.RepositoryLayer.Repositories
 
         #endregion
 
-        #region SaveNoteAsync
-
-        public async Task SaveNoteAsync()
-        {
-            await _dbContext.SaveChangesAsync();
-        }
-
-        #endregion
-
-        #region UpdateNote
-
-        public void UpdateNote(Note note)
-        {
-            _dbContext.Update(note);
-        }
-
-        #endregion
     }
 }
