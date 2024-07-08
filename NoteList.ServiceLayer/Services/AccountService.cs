@@ -82,13 +82,15 @@ namespace NoteList.ServiceLayer.Services
 
         #endregion
 
+        #region AddRoleToUser
+
         public async Task AddRoleToUser(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
             var result = await _userManager.AddToRoleAsync(user, "User");
-
         }
 
+        #endregion
     }
 }

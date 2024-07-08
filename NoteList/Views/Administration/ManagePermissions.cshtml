@@ -1,0 +1,43 @@
+﻿@using NoteList.DomainLayer.Models
+@model UserClaimViewModel
+
+@{
+    ViewData["Title"] = "User Claims";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">User Claims</h2>
+    <form method="post">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">User Details</h3>
+                <p><strong>Username:</strong> @Model.UserName</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h3 class="card-title">Claims</h3>
+                <ul class="list-group">
+                    @for (int i = 0; i < Model.Cliams.Count; i++)
+                    {
+                        <div class="form-check m-1">
+                            <input type="hidden" asp-for="@Model.Cliams[i].ClaimType" />
+                            <input asp-for="@Model.Cliams[i].IsSelected" class="form-check-input" />
+                            <label class="form-check-label" asp-for="@Model.Cliams[i].IsSelected">
+                                @Model.Cliams[i].ClaimType
+                            </label>
+                        </div>
+                    }
+                </ul>
+            </div>
+            <div class="card-footer">
+                <input type="submit" value="Update" class="btn btn-warning btn-space"
+                       style="width:auto" />
+                <a asp-action="Index" asp-route-Id="@Model.Id"
+                   class="btn btn-secondary" style="width:auto">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
