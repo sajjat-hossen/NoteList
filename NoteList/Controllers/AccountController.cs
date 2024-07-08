@@ -40,6 +40,7 @@ namespace NoteList.Controllers
 
                 if (result.Succeeded)
                 {
+                    await _accountService.AddRoleToUser(model.Email);
                     await _accountService.SignInAccountAsync(model);
 
                     return RedirectToAction("index", "home");
