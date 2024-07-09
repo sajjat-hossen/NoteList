@@ -16,14 +16,16 @@ namespace NoteList.ServiceLayer.Services
         #region Fileds
 
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         #endregion
 
         #region Constructor
 
-        public AdministrationService(UserManager<IdentityUser> userManager)
+        public AdministrationService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         #endregion
@@ -120,6 +122,8 @@ namespace NoteList.ServiceLayer.Services
                 {
                     return false;
                 }
+
+                await _signInManager.RefreshSignInAsync(user);
             }
 
             return true;
