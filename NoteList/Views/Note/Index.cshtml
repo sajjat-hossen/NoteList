@@ -8,7 +8,10 @@
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Notes</h1>
     <div class="mb-4">
-        <a class="btn btn-primary" asp-action="Create">Create Note</a>
+        @if (User.HasClaim(c => c.Type == "Create Role"))
+        {
+            <a class="btn btn-primary" asp-action="Create">Create Note</a>
+        }
     </div>
     <div class="row">
         @foreach (var note in Model)
@@ -20,8 +23,14 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">@note.Description</p>
-                        <a class="btn btn-warning btn-space" asp-action="Edit" asp-route-id="@note.Id">Edit</a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@note.Id">Delete</a>
+                        @if (User.HasClaim(c => c.Type == "Edit Role"))
+                        {
+                            <a class="btn btn-warning btn-space" asp-action="Edit" asp-route-id="@note.Id">Edit</a>
+                        }
+                        @if (User.HasClaim(c => c.Type == "Delete Role"))
+                        {
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@note.Id">Delete</a>
+                        }
                     </div>
                 </div>
             </div>
