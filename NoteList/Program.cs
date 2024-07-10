@@ -29,6 +29,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
     options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
     options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
+    options.AddPolicy("ViewRolePolicy", policy => policy.RequireClaim("View Role"));
 });
 
 builder.Services.ConfigureApplicationCookie(options =>

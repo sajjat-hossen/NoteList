@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using NoteList.DomainLayer.Models;
 using NoteList.Models;
 using NoteList.ServiceLayer.IServices;
@@ -17,15 +18,17 @@ namespace NoteList.ServiceLayer.Services
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion
 
         #region Constructor
 
-        public AdministrationService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AdministrationService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -123,7 +126,9 @@ namespace NoteList.ServiceLayer.Services
                     return false;
                 }
 
-                await _signInManager.RefreshSignInAsync(user);
+                var logedUserId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+                var logedUser = await FindUserByIdAsync(logedUserId);
+                await _signInManager.RefreshSignInAsync(logedUser);
             }
 
             return true;

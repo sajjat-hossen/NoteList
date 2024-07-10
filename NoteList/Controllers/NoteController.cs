@@ -25,6 +25,7 @@ namespace NoteList.Controllers
 
         #region Index
 
+        [Authorize(Policy = "ViewRolePolicy")]
         public async Task<IActionResult> Index()
         {
             var notes = await  _noteService.GetAllNoteAsync();
