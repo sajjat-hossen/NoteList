@@ -42,6 +42,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 
 var app = builder.Build();

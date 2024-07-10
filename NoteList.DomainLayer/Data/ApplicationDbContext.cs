@@ -25,22 +25,23 @@ namespace NoteList.DomainLayer.Data
 
             // Seed Roles
             builder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Id = "2", Name = "User", NormalizedName = "USER" }
+                new IdentityRole { Id = "1", Name = "SuperAdmin", NormalizedName = "SUPERADMIN" },
+                new IdentityRole { Id = "2", Name = "Admin", NormalizedName = "ADMIN" },
+                new IdentityRole { Id = "3", Name = "User", NormalizedName = "USER" }
             );
 
             // Seed Admin User
-            var adminId = "admin-id";
+            var superAdminId = "superAdmin-id";
             var hasher = new PasswordHasher<IdentityUser>();
             var adminUser = new IdentityUser
             {
-                Id = adminId,
-                UserName = "admin@gmail.com",
-                NormalizedUserName = "ADMIN@GMAIL.COM",
-                Email = "admin@gmail.com",
-                NormalizedEmail = "ADMIN@GMAIL.COM",
+                Id = superAdminId,
+                UserName = "superadmin@gmail.com",
+                NormalizedUserName = "SUPERADMIN@GMAIL.COM",
+                Email = "superadmin@gmail.com",
+                NormalizedEmail = "SUPERADMIN@GMAIL.COM",
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Admin@123"),
+                PasswordHash = hasher.HashPassword(null, "superAdmin@123"),
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
@@ -49,7 +50,7 @@ namespace NoteList.DomainLayer.Data
             // Assign Admin Role to Admin User
             builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                UserId = adminId,
+                UserId = superAdminId,
                 RoleId = "1" // RoleId for Admin
             });
         }

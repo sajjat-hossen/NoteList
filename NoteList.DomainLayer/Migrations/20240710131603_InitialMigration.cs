@@ -177,19 +177,20 @@ namespace NoteList.DomainLayer.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1", null, "Admin", "ADMIN" },
-                    { "2", null, "User", "USER" }
+                    { "1", null, "SuperAdmin", "SUPERADMIN" },
+                    { "2", null, "Admin", "ADMIN" },
+                    { "3", null, "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "admin-id", 0, "f86ba4d4-f5b0-4e93-b2c4-2a993c0c1d12", "admin@gmail.com", true, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEJml2YG9Gqo5ZF/5GzJXqbFiFqPQ3r0eRVziVG7brPf3SOGNHph+lKAjSW3JLxw7Nw==", null, false, "095f7d47-36b3-4272-ad55-6c052c6a8891", false, "admin@gmail.com" });
+                values: new object[] { "superAdmin-id", 0, "be1d77ca-13b2-4e45-b143-c8d042221a8f", "superadmin@gmail.com", true, false, null, "SUPERADMIN@GMAIL.COM", "SUPERADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEPqTRCvtIfF1SUzI3YW4fmTNq7Pfaxi52KIMaxyATkVYPaMnpbafqyCjpNo1RwwrBw==", null, false, "939e7e25-ae07-4466-b557-8c1d0fccf743", false, "superadmin@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "1", "admin-id" });
+                values: new object[] { "1", "superAdmin-id" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

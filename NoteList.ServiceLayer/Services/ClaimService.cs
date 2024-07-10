@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace NoteList.ServiceLayer.Services
 {
-    public class AdministrationService : IAdministrationService
+    public class ClaimService : IClaimService
     {
         #region Fileds
 
@@ -24,11 +24,11 @@ namespace NoteList.ServiceLayer.Services
 
         #region Constructor
 
-        public AdministrationService(UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor, SignInManager<IdentityUser> signInManager)
+        public ClaimService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
             _signInManager = signInManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -55,44 +55,44 @@ namespace NoteList.ServiceLayer.Services
 
         #endregion
 
-        #region GetUserRolesAsync
+        #region GetUserClaimsAsync
 
-        public async Task<IEnumerable<string>> GetUserRolesAsync(IdentityUser user)
+        public async Task<IEnumerable<Claim>> GetUserClaimsAsync(IdentityUser user)
         {
-            var roles = await _userManager.GetRolesAsync(user);
+            var claims = await _userManager.GetClaimsAsync(user);
 
-            return roles;
+            return claims;
         }
 
         #endregion
 
-        #region GetUserRolesModel
+        #region GetUserClaimsModel
 
-        public async Task<UserRoleViewModel> GetUserRolesModel(IdentityUser user)
+        public async Task<UserClaimViewModel> GetUserClaimsModel(IdentityUser user)
         {
-            var model = new UserRoleViewModel
+            var model = new UserClaimViewModel
             {
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
-                Roles = new List<UserRole>()
+                Cliams = new List<UserClaim>()
             };
 
-            var existingUserRoles = await GetUserRolesAsync(user);
+            var existingUserClaims = await GetUserClaimsAsync(user);
 
-            foreach (string role in RolesStore.GetAllRoles())
+            foreach (Claim claim in ClaimsStore.GetAllClaims())
             {
-                UserRole userRole = new UserRole
+                UserClaim userClaim = new UserClaim
                 {
-                    RoleName = role
+                    ClaimType = claim.Type
                 };
 
-                if (existingUserRoles.Any(c => c == role))
+                if (existingUserClaims.Any(c => c.Type == claim.Type))
                 {
-                    userRole.IsSelected = true;
+                    userClaim.IsSelected = true;
                 }
 
-                model.Roles.Add(userRole);
+                model.Cliams.Add(userClaim);
             }
 
             return model;
@@ -100,26 +100,26 @@ namespace NoteList.ServiceLayer.Services
 
         #endregion
 
-        #region UpdateUserRolesAsync
+        #region UpdateUserClaimsAsync
 
-        public async Task<bool> UpdateUserRolesAsync(UserRoleViewModel model)
+        public async Task<bool> UpdateUserClaimsAsync(UserClaimViewModel model)
         {
             var user = await FindUserByIdAsync(model.Id);
-            var roles = await _userManager.GetRolesAsync(user);
-            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+            var claims = await _userManager.GetClaimsAsync(user);
+            var result = await _userManager.RemoveClaimsAsync(user, claims);
 
             if (!result.Succeeded)
             {
                 return false;
             }
 
-            var allSelectedRoles = model.Roles.Where(c => c.IsSelected)
-                .Select(c => c.RoleName)
+            var allSelectedClaims = model.Cliams.Where(c => c.IsSelected)
+                .Select(c => new Claim(c.ClaimType, c.ClaimType))
                 .ToList();
 
-            if (allSelectedRoles.Any())
+            if (allSelectedClaims.Any())
             {
-                result = await _userManager.AddToRolesAsync(user, allSelectedRoles);
+                result = await _userManager.AddClaimsAsync(user, allSelectedClaims);
 
                 if (!result.Succeeded)
                 {
@@ -132,7 +132,6 @@ namespace NoteList.ServiceLayer.Services
             }
 
             return true;
-
         }
 
         #endregion

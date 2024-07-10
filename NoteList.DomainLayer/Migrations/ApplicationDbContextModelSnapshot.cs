@@ -52,12 +52,18 @@ namespace NoteList.DomainLayer.Migrations
                         new
                         {
                             Id = "1",
+                            Name = "SuperAdmin",
+                            NormalizedName = "SUPERADMIN"
+                        },
+                        new
+                        {
+                            Id = "2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = "3",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -155,19 +161,19 @@ namespace NoteList.DomainLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "admin-id",
+                            Id = "superAdmin-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f86ba4d4-f5b0-4e93-b2c4-2a993c0c1d12",
-                            Email = "admin@gmail.com",
+                            ConcurrencyStamp = "be1d77ca-13b2-4e45-b143-c8d042221a8f",
+                            Email = "superadmin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@GMAIL.COM",
-                            NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJml2YG9Gqo5ZF/5GzJXqbFiFqPQ3r0eRVziVG7brPf3SOGNHph+lKAjSW3JLxw7Nw==",
+                            NormalizedEmail = "SUPERADMIN@GMAIL.COM",
+                            NormalizedUserName = "SUPERADMIN@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPqTRCvtIfF1SUzI3YW4fmTNq7Pfaxi52KIMaxyATkVYPaMnpbafqyCjpNo1RwwrBw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "095f7d47-36b3-4272-ad55-6c052c6a8891",
+                            SecurityStamp = "939e7e25-ae07-4466-b557-8c1d0fccf743",
                             TwoFactorEnabled = false,
-                            UserName = "admin@gmail.com"
+                            UserName = "superadmin@gmail.com"
                         });
                 });
 
@@ -235,7 +241,7 @@ namespace NoteList.DomainLayer.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "admin-id",
+                            UserId = "superAdmin-id",
                             RoleId = "1"
                         });
                 });
