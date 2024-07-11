@@ -24,10 +24,20 @@
                     {
                         <div class="form-check m-1">
                             <input type="hidden" asp-for="@Model.Cliams[i].ClaimType" />
-                            <input asp-for="@Model.Cliams[i].IsSelected" class="form-check-input" />
+                            
+                            @if (Model.Cliams[i].isRoleClaimed == true)
+                            {
+                                <input asp-for="@Model.Cliams[i].IsSelected" class="form-check-input" disabled />
+                            }
+                            else
+                            {
+                                <input asp-for="@Model.Cliams[i].IsSelected" class="form-check-input"/>
+                            }
+
                             <label class="form-check-label" asp-for="@Model.Cliams[i].IsSelected">
                                 @Model.Cliams[i].ClaimType
                             </label>
+
                         </div>
                     }
                 </ul>

@@ -10,5 +10,6 @@ namespace NoteList.DomainLayer.Models
     {
         public string ClaimType { get; set; }
         public bool IsSelected { get; set; }
+        public bool isRoleClaimed { get; set; }
     }
 }

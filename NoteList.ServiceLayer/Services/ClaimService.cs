@@ -18,17 +18,19 @@ namespace NoteList.ServiceLayer.Services
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion
 
         #region Constructor
 
-        public ClaimService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor httpContextAccessor)
+        public ClaimService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor httpContextAccessor, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _httpContextAccessor = httpContextAccessor;
+            _roleManager = roleManager;
         }
 
         #endregion
@@ -78,6 +80,20 @@ namespace NoteList.ServiceLayer.Services
                 Cliams = new List<UserClaim>()
             };
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var existingUserRolesClaims = new List<Claim>();
+
+            foreach (var role in userRoles)
+            {
+                var identityRole = await _roleManager.FindByNameAsync(role);
+                var claims = await _roleManager.GetClaimsAsync(identityRole);
+
+                foreach (var claim in claims)
+                {
+                    existingUserRolesClaims.Add(claim);
+                }
+            }
+
             var existingUserClaims = await GetUserClaimsAsync(user);
 
             foreach (Claim claim in ClaimsStore.GetAllClaims())
@@ -89,6 +105,12 @@ namespace NoteList.ServiceLayer.Services
 
                 if (existingUserClaims.Any(c => c.Type == claim.Type))
                 {
+                    userClaim.IsSelected = true;
+                }
+
+                if (existingUserRolesClaims.Any(c => c.Type == claim.Type))
+                {
+                    userClaim.isRoleClaimed = true;
                     userClaim.IsSelected = true;
                 }
 
