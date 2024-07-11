@@ -91,10 +91,6 @@ namespace NoteList.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateRoleClaims(List<RoleClaimViewModel> models)
         {
-            //if (models[0].RoleClaims[0].ClaimType == "Create Role")
-            //{
-            //    var x = 5;
-            //}
             var result = await _administrationService.UpdateRoleClaimsAsync(models);
 
             if (result == false)

@@ -141,6 +141,8 @@ namespace NoteList.ServiceLayer.Services
 
         #endregion
 
+        #region GetRoleClaimsAsync
+
         public async Task<List<RoleClaimViewModel>> GetRoleClaimsAsync()
         {
             var models = new List<RoleClaimViewModel>();
@@ -177,6 +179,10 @@ namespace NoteList.ServiceLayer.Services
             return models;
         }
 
+        #endregion
+
+        #region UpdateRoleClaimsAsync
+
         public async Task<bool> UpdateRoleClaimsAsync(List<RoleClaimViewModel> models)
         {
             foreach (string role in RolesStore.GetAllRoles())
@@ -205,5 +211,7 @@ namespace NoteList.ServiceLayer.Services
 
             return true;
         }
+
+        #endregion
     }
 }

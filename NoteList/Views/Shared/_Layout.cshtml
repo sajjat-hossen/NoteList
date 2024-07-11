@@ -39,11 +39,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Claim" asp-action="Index">Claims</a>
                             </li>
                         }
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">AccountManage</a>
-                        </li>
-                        
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">AccountManage</a>
+                            </li>
+                        }
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
