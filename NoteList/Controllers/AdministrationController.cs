@@ -24,6 +24,8 @@ namespace NoteList.Controllers
 
         #endregion
 
+        #region Index
+
         public IActionResult Index()
         {
             var users = _administrationService.GetAllUser();
@@ -31,7 +33,9 @@ namespace NoteList.Controllers
             return View(users);
         }
 
-        #region ManagePermissions
+        #endregion
+
+        #region ManageRoles
 
         [HttpGet]
 
@@ -65,6 +69,37 @@ namespace NoteList.Controllers
             if (result == false)
             {
                 return View(model);
+            }
+
+            return RedirectToAction("index");
+        }
+
+        #endregion
+
+        #region UpdateRoleClaims
+
+        [HttpGet]
+
+        public async Task<IActionResult> UpdateRoleClaims()
+        {
+            var models = await _administrationService.GetRoleClaimsAsync();
+            var x = 10;
+
+            return View(models);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRoleClaims(List<RoleClaimViewModel> models)
+        {
+            //if (models[0].RoleClaims[0].ClaimType == "Create Role")
+            //{
+            //    var x = 5;
+            //}
+            var result = await _administrationService.UpdateRoleClaimsAsync(models);
+
+            if (result == false)
+            {
+                return View(models);
             }
 
             return RedirectToAction("index");

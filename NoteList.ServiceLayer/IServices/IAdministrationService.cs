@@ -15,5 +15,7 @@ namespace NoteList.ServiceLayer.IServices
         Task<IEnumerable<string>> GetUserRolesAsync(IdentityUser user);
         Task<UserRoleViewModel> GetUserRolesModel(IdentityUser user);
         Task<bool> UpdateUserRolesAsync(UserRoleViewModel model);
+        Task<List<RoleClaimViewModel>> GetRoleClaimsAsync();
+        Task<bool> UpdateRoleClaimsAsync(List<RoleClaimViewModel> models);
     }
 }

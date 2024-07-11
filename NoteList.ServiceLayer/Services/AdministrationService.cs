@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using NoteList.DomainLayer.Models;
 using NoteList.Models;
 using NoteList.ServiceLayer.IServices;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -18,17 +20,19 @@ namespace NoteList.ServiceLayer.Services
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion
 
         #region Constructor
 
-        public AdministrationService(UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor, SignInManager<IdentityUser> signInManager)
+        public AdministrationService(UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         #endregion
@@ -136,5 +140,70 @@ namespace NoteList.ServiceLayer.Services
         }
 
         #endregion
+
+        public async Task<List<RoleClaimViewModel>> GetRoleClaimsAsync()
+        {
+            var models = new List<RoleClaimViewModel>();
+            foreach (string role in RolesStore.GetAllRoles())
+            {
+                var roleClaimModel = new RoleClaimViewModel
+                {
+                    RoleName = role,
+                    RoleClaims = new List<RoleClaim>()
+                };
+
+
+                var identityRole = await _roleManager.FindByNameAsync(role);
+                var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
+
+                foreach(Claim claim in ClaimsStore.GetAllClaims())
+                {
+                    RoleClaim roleClaim = new RoleClaim
+                    {
+                        ClaimType = claim.Type
+                    };
+
+                    if (existingRoleClaims.Any(c => c.Type == claim.Type))
+                    {
+                        roleClaim.IsSelected = true;
+                    }
+
+                    roleClaimModel.RoleClaims.Add(roleClaim);
+                }
+
+                models.Add(roleClaimModel);
+            }
+
+            return models;
+        }
+
+        public async Task<bool> UpdateRoleClaimsAsync(List<RoleClaimViewModel> models)
+        {
+            foreach (string role in RolesStore.GetAllRoles())
+            {
+                var identityRole = await _roleManager.FindByNameAsync(role);
+                var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
+
+                foreach(Claim claim in existingRoleClaims)
+                {
+                    await _roleManager.RemoveClaimAsync(identityRole, claim);
+                }
+            }
+
+            foreach(var model in models)
+            {
+                var identityRole = await _roleManager.FindByNameAsync(model.RoleName);
+                var allSelectedClaims = model.RoleClaims.Where(c => c.IsSelected)
+                .Select(c => new Claim(c.ClaimType, c.ClaimType))
+                .ToList();
+
+                foreach(var claim in allSelectedClaims)
+                {
+                    await _roleManager.AddClaimAsync(identityRole, claim);
+                }
+            }
+
+            return true;
+        }
     }
 }

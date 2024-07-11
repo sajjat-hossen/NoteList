@@ -1,0 +1,46 @@
+﻿@using NoteList.DomainLayer.Models
+@model List<RoleClaimViewModel>
+
+@{
+    ViewData["Title"] = "Role Claims";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Role Claims</h2>
+    <form method="post">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Role - Claims</h3>
+                <div class="row">
+                    @for (int i = 0; i < Model.Count(); ++i)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title">@Model[i].RoleName</h3>
+                                    <input type="hidden" asp-for="@Model[i].RoleName"/>
+                                    <ul class="list-group">
+                                        @for (int j = 0; j < Model[i].RoleClaims.Count; j++)
+                                        {
+                                            <div class="form-check m-1">
+                                                <input type="hidden" asp-for="@Model[i].RoleClaims[j].ClaimType" />
+                                                <input asp-for="@Model[i].RoleClaims[j].IsSelected" class="form-check-input" />
+                                                <label class="form-check-label" asp-for="@Model[i].RoleClaims[j].IsSelected">
+                                                    @Model[i].RoleClaims[j].ClaimType
+                                                </label>
+                                            </div>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Update" class="btn btn-warning btn-space" style="width:auto" />
+            <a asp-action="Index" class="btn btn-secondary" style="width:auto">Cancel</a>
+        </div>
+    </form>
+</div>
