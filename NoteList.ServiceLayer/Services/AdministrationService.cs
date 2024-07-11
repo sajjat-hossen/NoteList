@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NoteList.DomainLayer.Models;
 using NoteList.Models;
 using NoteList.ServiceLayer.IServices;
@@ -84,14 +85,16 @@ namespace NoteList.ServiceLayer.Services
 
             var existingUserRoles = await GetUserRolesAsync(user);
 
-            foreach (string role in RolesStore.GetAllRoles())
+            var roles = await _roleManager.Roles.ToListAsync();
+
+            foreach (IdentityRole role in roles)
             {
                 UserRole userRole = new UserRole
                 {
-                    RoleName = role
+                    RoleName = role.Name
                 };
 
-                if (existingUserRoles.Any(c => c == role))
+                if (existingUserRoles.Any(c => c == role.Name))
                 {
                     userRole.IsSelected = true;
                 }
@@ -146,16 +149,16 @@ namespace NoteList.ServiceLayer.Services
         public async Task<List<RoleClaimViewModel>> GetRoleClaimsAsync()
         {
             var models = new List<RoleClaimViewModel>();
-            foreach (string role in RolesStore.GetAllRoles())
+            var roles = await _roleManager.Roles.ToListAsync();
+            foreach (IdentityRole identityRole in roles)
             {
                 var roleClaimModel = new RoleClaimViewModel
                 {
-                    RoleName = role,
+                    RoleName = identityRole.Name,
                     RoleClaims = new List<RoleClaim>()
                 };
 
 
-                var identityRole = await _roleManager.FindByNameAsync(role);
                 var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
 
                 foreach(Claim claim in ClaimsStore.GetAllClaims())
@@ -185,9 +188,9 @@ namespace NoteList.ServiceLayer.Services
 
         public async Task<bool> UpdateRoleClaimsAsync(List<RoleClaimViewModel> models)
         {
-            foreach (string role in RolesStore.GetAllRoles())
+            var roles = await _roleManager.Roles.ToListAsync();
+            foreach (IdentityRole identityRole in roles)
             {
-                var identityRole = await _roleManager.FindByNameAsync(role);
                 var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
 
                 foreach(Claim claim in existingRoleClaims)

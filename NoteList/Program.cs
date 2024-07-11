@@ -44,6 +44,7 @@ builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IAdministrationService, AdministrationService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 
 var app = builder.Build();
 
