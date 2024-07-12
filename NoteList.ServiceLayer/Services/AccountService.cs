@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NoteList.DomainLayer.Models;
 using NoteList.ServiceLayer.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoteList.ServiceLayer.Services
 {

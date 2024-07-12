@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NoteList.DomainLayer.Models;
 using NoteList.ServiceLayer.IServices;
-using NoteList.ServiceLayer.Services;
 
 namespace NoteList.Controllers
 {

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NoteList.DomainLayer.Models
+﻿namespace NoteList.DomainLayer.Models
 {
     public class UserClaimViewModel
     {

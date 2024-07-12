@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoteList.DomainLayer.Models;
-using NoteList.Models;
 using NoteList.ServiceLayer.IServices;
-using System.Security.Claims;
 
 namespace NoteList.Controllers
 {

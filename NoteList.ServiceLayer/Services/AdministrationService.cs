@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NoteList.DomainLayer.Models;
 using NoteList.Models;
 using NoteList.ServiceLayer.IServices;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoteList.ServiceLayer.Services
 {
