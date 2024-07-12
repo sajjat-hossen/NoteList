@@ -12,7 +12,7 @@ using NoteList.DomainLayer.Data;
 namespace NoteList.DomainLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240710131603_InitialMigration")]
+    [Migration("20240712094450_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -166,15 +166,15 @@ namespace NoteList.DomainLayer.Migrations
                         {
                             Id = "superAdmin-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be1d77ca-13b2-4e45-b143-c8d042221a8f",
+                            ConcurrencyStamp = "419cb982-b0e6-41cc-a901-e4ccb908eac0",
                             Email = "superadmin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPERADMIN@GMAIL.COM",
                             NormalizedUserName = "SUPERADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPqTRCvtIfF1SUzI3YW4fmTNq7Pfaxi52KIMaxyATkVYPaMnpbafqyCjpNo1RwwrBw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGmzc5pHWnwncXlYuAhZTwVqrCGgExu5T4/xPw9bWQxbLtvnDC4Zf+nOLv37A5PwSQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "939e7e25-ae07-4466-b557-8c1d0fccf743",
+                            SecurityStamp = "c5304d40-f46a-4a5a-9ff3-35f89d5f3f87",
                             TwoFactorEnabled = false,
                             UserName = "superadmin@gmail.com"
                         });
