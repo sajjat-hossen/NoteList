@@ -13,16 +13,16 @@ namespace NoteList.ServiceLayer.Services
     {
         #region Fileds
 
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser<int>> _userManager;
+        private readonly SignInManager<IdentityUser<int>> _signInManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion
 
         #region Constructor
 
-        public AdministrationService(UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AdministrationService(UserManager<IdentityUser<int>> userManager, IHttpContextAccessor httpContextAccessor, SignInManager<IdentityUser<int>> signInManager, RoleManager<IdentityRole<int>> roleManager)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
@@ -34,7 +34,7 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetAllUser
 
-        public IEnumerable<IdentityUser> GetAllUser()
+        public IEnumerable<IdentityUser<int>> GetAllUser()
         {
             var users = _userManager.Users;
 
@@ -45,9 +45,9 @@ namespace NoteList.ServiceLayer.Services
 
         #region FindUserByIdAsync
 
-        public async Task<IdentityUser> FindUserByIdAsync(string id)
+        public async Task<IdentityUser<int>> FindUserByIdAsync(int id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
 
             return user;
         }
@@ -56,7 +56,7 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetUserRolesAsync
 
-        public async Task<IEnumerable<string>> GetUserRolesAsync(IdentityUser user)
+        public async Task<IEnumerable<string>> GetUserRolesAsync(IdentityUser<int> user)
         {
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -67,7 +67,7 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetUserRolesModel
 
-        public async Task<UserRoleViewModel> GetUserRolesModel(IdentityUser user)
+        public async Task<UserRoleViewModel> GetUserRolesModel(IdentityUser<int> user)
         {
             var model = new UserRoleViewModel
             {
@@ -81,7 +81,7 @@ namespace NoteList.ServiceLayer.Services
 
             var roles = await _roleManager.Roles.ToListAsync();
 
-            foreach (IdentityRole role in roles)
+            foreach (IdentityRole<int> role in roles)
             {
                 UserRole userRole = new UserRole
                 {
@@ -128,7 +128,7 @@ namespace NoteList.ServiceLayer.Services
                 }
 
                 var logedUserId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-                var logedUser = await FindUserByIdAsync(logedUserId);
+                var logedUser = await FindUserByIdAsync(Convert.ToInt32(logedUserId));
                 await _signInManager.RefreshSignInAsync(logedUser);
             }
 
@@ -144,7 +144,7 @@ namespace NoteList.ServiceLayer.Services
         {
             var models = new List<RoleClaimViewModel>();
             var roles = await _roleManager.Roles.ToListAsync();
-            foreach (IdentityRole identityRole in roles)
+            foreach (IdentityRole<int> identityRole in roles)
             {
                 var roleClaimModel = new RoleClaimViewModel
                 {
@@ -183,7 +183,7 @@ namespace NoteList.ServiceLayer.Services
         public async Task<bool> UpdateRoleClaimsAsync(List<RoleClaimViewModel> models)
         {
             var roles = await _roleManager.Roles.ToListAsync();
-            foreach (IdentityRole identityRole in roles)
+            foreach (IdentityRole<int> identityRole in roles)
             {
                 var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
 

@@ -38,7 +38,7 @@ namespace NoteList.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> ManageRoles(string id)
+        public async Task<IActionResult> ManageRoles(int id)
         {
             var user = await _administrationService.FindUserByIdAsync(id);
 

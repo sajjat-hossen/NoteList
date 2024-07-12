@@ -8,14 +8,14 @@ namespace NoteList.ServiceLayer.Services
     {
         #region Fields
 
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser<int>> _userManager;
+        private readonly SignInManager<IdentityUser<int>> _signInManager;
 
         #endregion
 
         #region Constructor
 
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountService(UserManager<IdentityUser<int>> userManager, SignInManager<IdentityUser<int>> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,7 +27,7 @@ namespace NoteList.ServiceLayer.Services
 
         public async Task<IdentityResult> CreateAccountAsync(RegisterViewModel model)
         {
-            var user = new IdentityUser
+            var user = new IdentityUser<int>
             {
                 UserName = model.Email,
                 Email = model.Email
@@ -45,11 +45,7 @@ namespace NoteList.ServiceLayer.Services
 
         public async Task SignInAccountAsync(RegisterViewModel model)
         {
-            var user = new IdentityUser
-            {
-                UserName = model.Email,
-                Email = model.Email
-            };
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             await _signInManager.SignInAsync(user, isPersistent: false);
         }

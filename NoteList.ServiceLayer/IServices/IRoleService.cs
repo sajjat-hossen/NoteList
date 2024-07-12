@@ -5,8 +5,8 @@ namespace NoteList.ServiceLayer.IServices
 {
     public interface IRoleService
     {
-        Task<IEnumerable<IdentityRole>> GetAllRoles();
+        Task<IEnumerable<IdentityRole<int>>> GetAllRoles();
         Task<bool> CreateRoleAsync(CreateRole model);
-        Task DeleteRoleAsync(string id);
+        Task DeleteRoleAsync(int id);
     }
 }

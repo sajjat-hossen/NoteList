@@ -9,13 +9,13 @@ namespace NoteList.ServiceLayer.Services
     {
         #region Fields
 
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
 
         #endregion
 
         #region Constructor
 
-        public RoleService(RoleManager<IdentityRole> roleManager)
+        public RoleService(RoleManager<IdentityRole<int>> roleManager)
         {
             _roleManager = roleManager;
         }
@@ -24,7 +24,7 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetAllRoles
 
-        public async Task<IEnumerable<IdentityRole>> GetAllRoles()
+        public async Task<IEnumerable<IdentityRole<int>>> GetAllRoles()
         {
             return await _roleManager.Roles.ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace NoteList.ServiceLayer.Services
                 return false;
             }
 
-            var result = await _roleManager.CreateAsync(new IdentityRole(model.RoleName));
+            var result = await _roleManager.CreateAsync(new IdentityRole<int>(model.RoleName));
 
             if (!result.Succeeded)
             {
@@ -62,9 +62,9 @@ namespace NoteList.ServiceLayer.Services
 
         #region DeleteRoleAsync
 
-        public async Task DeleteRoleAsync(string id)
+        public async Task DeleteRoleAsync(int id)
         {
-            var role = await _roleManager.FindByIdAsync(id);
+            var role = await _roleManager.FindByIdAsync(id.ToString());
             await _roleManager.DeleteAsync(role);
         }
 

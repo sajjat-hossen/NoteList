@@ -6,10 +6,10 @@ namespace NoteList.ServiceLayer.IServices
 {
     public interface IClaimService
     {
-        IEnumerable<IdentityUser> GetAllUser();
-        Task<IdentityUser> FindUserByIdAsync(string id);
-        Task<IEnumerable<Claim>> GetUserClaimsAsync(IdentityUser user);
-        Task<UserClaimViewModel> GetUserClaimsModel(IdentityUser user);
+        IEnumerable<IdentityUser<int>> GetAllUser();
+        Task<IdentityUser<int>> FindUserByIdAsync(int id);
+        Task<IEnumerable<Claim>> GetUserClaimsAsync(IdentityUser<int> user);
+        Task<UserClaimViewModel> GetUserClaimsModel(IdentityUser<int> user);
         Task<bool> UpdateUserClaimsAsync(UserClaimViewModel model);
     }
 }

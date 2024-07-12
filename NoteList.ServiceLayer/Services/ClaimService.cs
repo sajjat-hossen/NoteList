@@ -11,16 +11,16 @@ namespace NoteList.ServiceLayer.Services
     {
         #region Fileds
 
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser<int>> _userManager;
+        private readonly SignInManager<IdentityUser<int>> _signInManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion
 
         #region Constructor
 
-        public ClaimService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor httpContextAccessor, RoleManager<IdentityRole> roleManager)
+        public ClaimService(UserManager<IdentityUser<int>> userManager, SignInManager<IdentityUser<int>> signInManager, IHttpContextAccessor httpContextAccessor, RoleManager<IdentityRole<int>> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -32,7 +32,7 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetAllUser
 
-        public IEnumerable<IdentityUser> GetAllUser()
+        public IEnumerable<IdentityUser<int>> GetAllUser()
         {
             var users = _userManager.Users;
 
@@ -43,9 +43,9 @@ namespace NoteList.ServiceLayer.Services
 
         #region FindUserByIdAsync
 
-        public async Task<IdentityUser> FindUserByIdAsync(string id)
+        public async Task<IdentityUser<int>> FindUserByIdAsync(int id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id.ToString());
 
             return user;
         }
@@ -54,7 +54,7 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetUserClaimsAsync
 
-        public async Task<IEnumerable<Claim>> GetUserClaimsAsync(IdentityUser user)
+        public async Task<IEnumerable<Claim>> GetUserClaimsAsync(IdentityUser<int> user)
         {
             var claims = await _userManager.GetClaimsAsync(user);
 
@@ -65,7 +65,7 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetUserClaimsModel
 
-        public async Task<UserClaimViewModel> GetUserClaimsModel(IdentityUser user)
+        public async Task<UserClaimViewModel> GetUserClaimsModel(IdentityUser<int> user)
         {
             var model = new UserClaimViewModel
             {
@@ -144,7 +144,7 @@ namespace NoteList.ServiceLayer.Services
                 }
 
                 var logedUserId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-                var logedUser = await FindUserByIdAsync(logedUserId);
+                var logedUser = await FindUserByIdAsync(Convert.ToInt32(logedUserId));
                 await _signInManager.RefreshSignInAsync(logedUser);
             }
 

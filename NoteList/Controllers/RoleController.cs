@@ -61,9 +61,9 @@ namespace NoteList.Controllers
 
         #region Delete
 
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }

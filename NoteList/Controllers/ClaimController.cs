@@ -38,7 +38,7 @@ namespace NoteList.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> ManageClaims(string id)
+        public async Task<IActionResult> ManageClaims(int id)
         {
             var user = await _claimService.FindUserByIdAsync(id);
 
