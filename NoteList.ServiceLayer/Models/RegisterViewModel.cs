@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NoteList.DomainLayer.Models
+namespace NoteList.ServiceLayer.Models
 {
     public class RegisterViewModel
     {

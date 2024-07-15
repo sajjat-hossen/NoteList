@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NoteList.DomainLayer.Models;
 using NoteList.Models;
 using NoteList.ServiceLayer.IServices;
+using NoteList.ServiceLayer.Models;
 using System.Data;
 using System.Security.Claims;
 

@@ -1,6 +1,8 @@
-﻿using NoteList.DomainLayer.Models;
+﻿using AutoMapper;
+using NoteList.DomainLayer.Models;
 using NoteList.RepositoryLayer.IRepositories;
 using NoteList.ServiceLayer.IServices;
+using NoteList.ServiceLayer.Models;
 
 namespace NoteList.ServiceLayer.Services
 {
@@ -9,33 +11,59 @@ namespace NoteList.ServiceLayer.Services
         #region Fields
 
         private readonly INoteRepository _noteRepository;
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region Constructor
 
-        public NoteService(INoteRepository noteRepository)
+        public NoteService(INoteRepository noteRepository, IMapper mapper)
         {
             _noteRepository = noteRepository;
+            _mapper = mapper;
+        }
+
+        #endregion
+
+        #region MapNoteToNoteViewModel
+
+        public NoteViewModel MapNoteToNoteViewModel(Note note)
+        {
+            var noteViewModel = _mapper.Map<NoteViewModel>(note);
+
+            return noteViewModel;
+        }
+
+        #endregion
+
+        #region MapNoteViewModelToNote
+
+        public Note MapNoteViewModelToNote(NoteViewModel model)
+        {
+            var note = _mapper.Map<Note>(model);
+
+            return note;
         }
 
         #endregion
 
         #region GetAllNoteAsync
 
-        public async Task<List<Note>> GetAllNoteAsync()
+        public async Task<List<NoteViewModel>> GetAllNoteAsync()
         {
             var notes = await _noteRepository.GetAllEntityFromDbAsync();
+            var notesViewModel = _mapper.Map<List<NoteViewModel>>(notes);
 
-            return notes;
+            return notesViewModel;
         }
 
         #endregion
 
         #region CreateNoteAsync
 
-        public async Task CreateNoteAsync(Note note)
+        public async Task CreateNoteAsync(NoteViewModel model)
         {
+            var note = MapNoteViewModelToNote(model);
             await _noteRepository.AddEntityAsync(note);
         }
 
@@ -63,8 +91,9 @@ namespace NoteList.ServiceLayer.Services
 
         #region UpdateNoteAsync
 
-        public async Task UpdateNoteAsync(Note note)
+        public async Task UpdateNoteAsync(NoteViewModel model)
         {
+            var note = MapNoteViewModelToNote(model);
             await _noteRepository.UpdateEntityAsync(note);
         }
 

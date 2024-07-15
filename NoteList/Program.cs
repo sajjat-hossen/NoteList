@@ -4,7 +4,9 @@ using NoteList.DomainLayer.Data;
 using NoteList.RepositoryLayer.IRepositories;
 using NoteList.RepositoryLayer.Repositories;
 using NoteList.ServiceLayer.IServices;
+using NoteList.ServiceLayer.MappingProfiles;
 using NoteList.ServiceLayer.Services;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
     options.AccessDeniedPath = "/Home/AccessDenied";
 });
+
+builder.Services.AddAutoMapper(typeof(Mappings));
 
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<INoteService, NoteService>();

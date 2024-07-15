@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using NoteList.DomainLayer.Models;
 using NoteList.Models;
 using NoteList.ServiceLayer.IServices;
+using NoteList.ServiceLayer.Models;
 using System.Security.Claims;
 
 namespace NoteList.ServiceLayer.Services

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NoteList.DomainLayer.Models;
+using NoteList.ServiceLayer.Models;
 
 namespace NoteList.ServiceLayer.IServices
 {

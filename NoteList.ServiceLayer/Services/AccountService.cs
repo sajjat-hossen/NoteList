@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NoteList.DomainLayer.Models;
 using NoteList.ServiceLayer.IServices;
+using NoteList.ServiceLayer.Models;
 
 namespace NoteList.ServiceLayer.Services
 {

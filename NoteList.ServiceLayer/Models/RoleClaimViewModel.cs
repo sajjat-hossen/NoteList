@@ -1,4 +1,6 @@
-﻿namespace NoteList.DomainLayer.Models
+﻿using NoteList.DomainLayer.Models;
+
+namespace NoteList.ServiceLayer.Models
 {
     public class RoleClaimViewModel
     {

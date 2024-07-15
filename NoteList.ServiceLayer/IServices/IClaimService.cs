@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NoteList.DomainLayer.Models;
+using NoteList.ServiceLayer.Models;
 using System.Security.Claims;
 
 namespace NoteList.ServiceLayer.IServices

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NoteList.DomainLayer.Models;
 using NoteList.ServiceLayer.IServices;
+using NoteList.ServiceLayer.Models;
 
 namespace NoteList.Controllers
 {
@@ -47,7 +47,7 @@ namespace NoteList.Controllers
 
         [HttpPost]
         [Authorize(Policy = "CreateRolePolicy")]
-        public async Task<IActionResult> Create(Note note)
+        public async Task<IActionResult> Create(NoteViewModel note)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace NoteList.Controllers
                 return NotFound();
             }
 
-            var note = await _noteService.GetNoteByIdAsync(id);
+            var note = _noteService.MapNoteToNoteViewModel(await _noteService.GetNoteByIdAsync(id));
 
             if (note == null)
             {
@@ -115,7 +115,7 @@ namespace NoteList.Controllers
                 return NotFound();
             }
 
-            var note =(Note) await _noteService.GetNoteByIdAsync(id);
+            var note = _noteService.MapNoteToNoteViewModel (await _noteService.GetNoteByIdAsync(id));
 
             if (note == null)
             {
@@ -128,7 +128,7 @@ namespace NoteList.Controllers
         [HttpPost]
         [Authorize(Policy = "EditRolePolicy")]
 
-        public async Task<IActionResult> Edit(Note note)
+        public async Task<IActionResult> Edit(NoteViewModel note)
         {
             if (ModelState.IsValid)
             {
