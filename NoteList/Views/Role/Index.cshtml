@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Role List";
+    int index = 0;
 }
 
 <div class="container mt-5">
@@ -11,30 +12,24 @@
             <a class="btn btn-primary" asp-controller="Role" asp-action="Create">Create Role</a>
         </div>
         <div class="col-6 text-end">
-            <a class="btn btn-secondary" asp-controller="Administration" asp-action="Index">Back to account Manage</a>
+            <a class="btn btn-secondary" asp-controller="Administration" asp-action="Index">Back to Account Manage</a>
         </div>
     </div>
-    <h2 class="mb-4 text-center">User List</h2>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Role Name</th>
-                    <th scope="col" class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var role in Model)
-                {
-                    <tr>
-                        <td>@role.Name</td>
-                        <td class="text-center">
-                            @* <a href="@Url.Action("Create", "Role", new { id = role.Id })" class="btn btn-warning btn-space btn-sm">Edit</a> *@
-                            <a href="@Url.Action("Delete", "Role", new { id = role.Id })" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <h2 class="mb-4 text-center">Role List</h2>
+
+    <div class="row mb-3 text-center">
+        <div class="col-md-6"><strong>Role Name</strong></div>
+        <div class="col-md-6"><strong>Action</strong></div>
     </div>
+
+    @foreach (var role in Model)
+    {
+        <div class="row border-bottom py-2 @(index % 2 == 0 ? "bg-light" : "bg-white") text-center">
+            <div class="col-md-6">@role.Name</div>
+            <div class="col-md-6">
+                <a href="@Url.Action("Delete", "Role", new { id = role.Id })" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+        </div>
+        index++;
+    }
 </div>

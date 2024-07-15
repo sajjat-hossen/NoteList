@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "User List";
+    int index = 0;
 }
 
 <div class="container mt-5">
@@ -15,28 +16,23 @@
         </div>
     </div>
     <h2 class="mb-4 text-center">User List</h2>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">User Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col" class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
-                    <tr>
-                        <td>@user.UserName</td>
-                        <td>@user.Email</td>
-                        <td class="text-center">
-                            <a href="@Url.Action("ManageRoles", "Administration", new { id = user.Id })" class="btn btn-secondary btn-sm">Role</a>
-                            <a href="@Url.Action("ManageClaims", "Claim", new { id = user.Id })" class="btn btn-info btn-sm">Claim</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+    <div class="row mb-3 text-center">
+        <div class="col-md-4"><strong>User Name</strong></div>
+        <div class="col-md-4"><strong>Email</strong></div>
+        <div class="col-md-4"><strong>Action</strong></div>
     </div>
+
+    @foreach (var user in Model)
+    {
+        <div class="row border-bottom py-2 @(index % 2 == 0 ? "bg-light" : "bg-white") text-center">
+            <div class="col-md-4">@user.UserName</div>
+            <div class="col-md-4">@user.Email</div>
+            <div class="col-md-4">
+                <a href="@Url.Action("ManageRoles", "Administration", new { id = user.Id })" class="btn btn-secondary btn-sm">Role</a>
+                <a href="@Url.Action("ManageClaims", "Claim", new { id = user.Id })" class="btn btn-info btn-sm">Claim</a>
+            </div>
+        </div>
+        index++;
+    }
 </div>
