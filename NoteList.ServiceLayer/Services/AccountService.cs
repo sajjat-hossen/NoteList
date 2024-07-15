@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.Models;
+using System.Security.Claims;
 
 namespace NoteList.ServiceLayer.Services
 {
@@ -10,15 +12,17 @@ namespace NoteList.ServiceLayer.Services
 
         private readonly UserManager<IdentityUser<int>> _userManager;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion
 
         #region Constructor
 
-        public AccountService(UserManager<IdentityUser<int>> userManager, SignInManager<IdentityUser<int>> signInManager)
+        public AccountService(UserManager<IdentityUser<int>> userManager, SignInManager<IdentityUser<int>> signInManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -73,13 +77,24 @@ namespace NoteList.ServiceLayer.Services
 
         #endregion
 
-        #region AddRoleToUser
+        #region ChangePassword
 
-        public async Task AddRoleToUser(string email)
+        public async Task<IdentityResult> ChangePassword(ChangePasswordViewModel model)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var logedUserId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var logedUser = await _userManager.FindByIdAsync(logedUserId);
 
-            var result = await _userManager.AddToRoleAsync(user, "User");
+            var restul = await _userManager.ChangePasswordAsync(logedUser, model.OldPassword, model.NewPassword);
+
+            if (!restul.Succeeded)
+            {
+                return restul;
+            }
+
+            await _signInManager.RefreshSignInAsync(logedUser);
+
+            return restul;
+
         }
 
         #endregion

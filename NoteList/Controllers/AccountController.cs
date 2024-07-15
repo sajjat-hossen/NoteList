@@ -41,7 +41,6 @@ namespace NoteList.Controllers
 
                 if (result.Succeeded)
                 {
-                    // await _accountService.AddRoleToUser(model.Email);
                      await _accountService.SignInAccountAsync(model);
 
                     return RedirectToAction("index", "home");
@@ -102,6 +101,39 @@ namespace NoteList.Controllers
             return RedirectToAction("index", "home");
         }
 
+        #endregion
+
+        #region ChangePassword
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _accountService.ChangePassword(model);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return View(model);
+            }
+
+            return RedirectToAction("index", "home");
+
+        }
         #endregion
 
     }

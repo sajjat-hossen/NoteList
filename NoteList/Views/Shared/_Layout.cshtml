@@ -52,6 +52,14 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
+                                <form method="get" asp-controller="account" asp-action="ChangePassword">
+                                    <button type="submit" style="width:auto"
+                                            class="nav-link btn btn-link py-0">
+                                        Change Password
+                                    </button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
                                 <form method="post" asp-controller="account" asp-action="logout">
                                     <button type="submit" style="width:auto"
                                             class="nav-link btn btn-link py-0">

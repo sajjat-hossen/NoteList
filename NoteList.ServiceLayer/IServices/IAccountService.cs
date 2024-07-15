@@ -9,6 +9,6 @@ namespace NoteList.ServiceLayer.IServices
         Task SignInAccountAsync(RegisterViewModel model);
         Task<SignInResult> PasswordSignInAccountAsync(LoginViewModel model);
         Task SignOutAccountAsync();
-        Task AddRoleToUser(string email);
+        Task<IdentityResult> ChangePassword(ChangePasswordViewModel model);
     }
 }
