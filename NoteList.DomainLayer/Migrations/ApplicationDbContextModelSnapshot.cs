@@ -168,15 +168,15 @@ namespace NoteList.DomainLayer.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "deffa0d8-7208-4421-9b76-e1f1c3717146",
+                            ConcurrencyStamp = "0c246750-c441-4171-adae-6175c2ff6c91",
                             Email = "superadmin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPERADMIN@GMAIL.COM",
                             NormalizedUserName = "SUPERADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOsTtGPaIyFDk37jOH3zsvJBs3PC6jFwmN3YuQu1ulg3JOCHcXK93vwbr8QbU8GJvg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECNSmaWwuvKmfaecaDXksEGRFIT5pWUMb6hfW6nIngTlMwupNe7VvjFd1vy2aD+25g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6928153c-b736-4b7f-bb67-30f76a7a9f6b",
+                            SecurityStamp = "45428b43-a166-4daa-86f5-cc297e5977d7",
                             TwoFactorEnabled = false,
                             UserName = "superadmin@gmail.com"
                         });
@@ -287,6 +287,27 @@ namespace NoteList.DomainLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("NoteList.DomainLayer.Models.TodoList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TodoLists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

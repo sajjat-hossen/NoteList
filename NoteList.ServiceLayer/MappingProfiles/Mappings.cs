@@ -10,6 +10,8 @@ namespace NoteList.ServiceLayer.MappingProfiles
         {
             CreateMap<NoteViewModel, Note>();
             CreateMap<Note, NoteViewModel>();
+            CreateMap<TodoList, TodoListViewModel>();
+            CreateMap<TodoListViewModel, TodoList>();
         }
     }
 }

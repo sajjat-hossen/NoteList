@@ -69,6 +69,20 @@ namespace NoteList.DomainLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TodoLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TodoLists", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -187,7 +201,7 @@ namespace NoteList.DomainLayer.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "deffa0d8-7208-4421-9b76-e1f1c3717146", "superadmin@gmail.com", true, false, null, "SUPERADMIN@GMAIL.COM", "SUPERADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEOsTtGPaIyFDk37jOH3zsvJBs3PC6jFwmN3YuQu1ulg3JOCHcXK93vwbr8QbU8GJvg==", null, false, "6928153c-b736-4b7f-bb67-30f76a7a9f6b", false, "superadmin@gmail.com" });
+                values: new object[] { 1, 0, "0c246750-c441-4171-adae-6175c2ff6c91", "superadmin@gmail.com", true, false, null, "SUPERADMIN@GMAIL.COM", "SUPERADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAECNSmaWwuvKmfaecaDXksEGRFIT5pWUMb6hfW6nIngTlMwupNe7VvjFd1vy2aD+25g==", null, false, "45428b43-a166-4daa-86f5-cc297e5977d7", false, "superadmin@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -254,6 +268,9 @@ namespace NoteList.DomainLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notes");
+
+            migrationBuilder.DropTable(
+                name: "TodoLists");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -6,31 +6,32 @@ using NoteList.ServiceLayer.Models;
 namespace NoteList.Controllers
 {
     [Authorize]
-    public class NoteController : Controller
+    public class TodoListController : Controller
     {
         #region Fields
 
-        private readonly INoteService _noteService;
+        private readonly ITodoListService _todoListService;
 
         #endregion
 
         #region Constructor
 
-        public NoteController(INoteService noteService)
+        public TodoListController(ITodoListService todoListService)
         {
-            _noteService = noteService;
+            _todoListService = todoListService;
         }
 
         #endregion
 
         #region Index
 
-        [Authorize(Policy = "ViewNotePolicy")]
+        [Authorize(Policy = "ViewTodoListPolicy")]
+
         public async Task<IActionResult> Index()
         {
-            var notes = await  _noteService.GetAllNoteAsync();
+            var todoLists = await _todoListService.GetAllTodoListAsync();
 
-            return View(notes);
+            return View(todoLists);
         }
 
         #endregion
@@ -38,7 +39,7 @@ namespace NoteList.Controllers
         #region Create
 
         [HttpGet]
-        [Authorize(Policy = "CreateNotePolicy")]
+        [Authorize(Policy = "CreateTodoListPolicy")]
 
         public IActionResult Create()
         {
@@ -46,12 +47,13 @@ namespace NoteList.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "CreateNotePolicy")]
-        public async Task<IActionResult> Create(NoteViewModel note)
+        [Authorize(Policy = "CreateTodoListPolicy")]
+
+        public async Task<IActionResult> Create(TodoListViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await _noteService.CreateNoteAsync(note);
+                await _todoListService.CreateTodoListAsync(model);
 
                 return RedirectToAction("Index");
             }
@@ -64,7 +66,7 @@ namespace NoteList.Controllers
         #region Delete
 
         [HttpGet]
-        [Authorize(Policy = "DeleteNotePolicy")]
+        [Authorize(Policy = "DeleteTodoListPolicy")]
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -73,29 +75,29 @@ namespace NoteList.Controllers
                 return NotFound();
             }
 
-            var note = _noteService.MapNoteToNoteViewModel(await _noteService.GetNoteByIdAsync(id));
+            var todoList = _todoListService.MapTodoListToTodoListViewModel(await _todoListService.GetTodoListByIdAsync(id));
 
-            if (note == null)
+            if (todoList == null)
             {
                 return NotFound();
             }
 
-            return View(note);
+            return View(todoList);
         }
 
         [HttpPost, ActionName("Delete")]
-        [Authorize(Policy = "DeleteNotePolicy")]
+        [Authorize(Policy = "DeleteTodoListPolicy")]
 
         public async Task<IActionResult> DeleteConfirm(int id)
         {
-            var note = await _noteService.GetNoteByIdAsync(id);
+            var todoList = await _todoListService.GetTodoListByIdAsync(id);
 
-            if (note == null)
+            if (todoList == null)
             {
                 return NotFound();
             }
 
-            await _noteService.RemoveNoteAsync(note);
+            await _todoListService.RemoveTodoListAsync(todoList);
 
             return RedirectToAction("Index");
 
@@ -106,7 +108,7 @@ namespace NoteList.Controllers
         #region Edit
 
         [HttpGet]
-        [Authorize(Policy = "EditNotePolicy")]
+        [Authorize(Policy = "EditTodoListPolicy")]
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -115,24 +117,24 @@ namespace NoteList.Controllers
                 return NotFound();
             }
 
-            var note = _noteService.MapNoteToNoteViewModel (await _noteService.GetNoteByIdAsync(id));
+            var todoList = _todoListService.MapTodoListToTodoListViewModel(await _todoListService.GetTodoListByIdAsync(id));
 
-            if (note == null)
+            if (todoList == null)
             {
                 return NotFound();
             }
 
-            return View(note);
+            return View(todoList);
         }
 
         [HttpPost]
-        [Authorize(Policy = "EditNotePolicy")]
+        [Authorize(Policy = "EditTodoListPolicy")]
 
-        public async Task<IActionResult> Edit(NoteViewModel note)
+        public async Task<IActionResult> Edit(TodoListViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await _noteService.UpdateNoteAsync(note);
+                await _todoListService.UpdateTodoListAsync(model);
 
                 return RedirectToAction("Index");
             }

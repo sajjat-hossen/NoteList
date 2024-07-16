@@ -29,10 +29,15 @@ builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
-    options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
-    options.AddPolicy("CreateRolePolicy", policy => policy.RequireClaim("Create Role"));
-    options.AddPolicy("ViewRolePolicy", policy => policy.RequireClaim("View Role"));
+    options.AddPolicy("DeleteNotePolicy", policy => policy.RequireClaim("Delete Note"));
+    options.AddPolicy("EditNotePolicy", policy => policy.RequireClaim("Edit Note"));
+    options.AddPolicy("CreateNotePolicy", policy => policy.RequireClaim("Create Note"));
+    options.AddPolicy("ViewNotePolicy", policy => policy.RequireClaim("View Note"));
+
+    options.AddPolicy("DeleteTodoListPolicy", policy => policy.RequireClaim("Delete TodoList"));
+    options.AddPolicy("EditTodoListPolicy", policy => policy.RequireClaim("Edit TodoList"));
+    options.AddPolicy("CreateTodoListPolicy", policy => policy.RequireClaim("Create TodoList"));
+    options.AddPolicy("ViewTodoListPolicy", policy => policy.RequireClaim("View TodoList"));
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -45,11 +50,13 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddAutoMapper(typeof(Mappings));
 
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
+builder.Services.AddScoped<ITodoListRepository, TodoListRepository>();
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<ITodoListService, TodoListService>();
 
 var app = builder.Build();
 

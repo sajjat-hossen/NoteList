@@ -1,16 +1,16 @@
 ﻿@using NoteList.ServiceLayer.Models
-@model List<NoteViewModel>
+@model List<TodoListViewModel>
 
 @{
-    ViewBag.Title = "All Notes";
+    ViewBag.Title = "All Todo Lists";
 }
 
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Notes</h1>
+    <h1 class="mb-4 text-center">Todo Lists</h1>
     <div class="mb-4">
-        @if (User.HasClaim(c => c.Type == "Create Note"))
+        @if (User.HasClaim(c => c.Type == "Create TodoList"))
         {
-            <a class="btn btn-primary" asp-action="Create">Create Note</a>
+            <a class="btn btn-primary" asp-action="Create">Create TodoList</a>
         }
     </div>
     <div class="row">
@@ -23,11 +23,11 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">@note.Description</p>
-                        @if (User.HasClaim(c => c.Type == "Edit Note"))
+                        @if (User.HasClaim(c => c.Type == "Edit TodoList"))
                         {
                             <a class="btn btn-warning btn-space" asp-action="Edit" asp-route-id="@note.Id">Edit</a>
                         }
-                        @if (User.HasClaim(c => c.Type == "Delete Note"))
+                        @if (User.HasClaim(c => c.Type == "Delete TodoList"))
                         {
                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@note.Id">Delete</a>
                         }

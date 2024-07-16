@@ -27,10 +27,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (User.HasClaim(c => c.Type == "View Role"))
+                        @if (User.HasClaim(c => c.Type == "View Note"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Note" asp-action="Index">Note</a>
+                            </li>
+                        }
+                        @if (User.HasClaim(c => c.Type == "View TodoList"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="TodoList" asp-action="Index">TodoList</a>
                             </li>
                         }
                         @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
