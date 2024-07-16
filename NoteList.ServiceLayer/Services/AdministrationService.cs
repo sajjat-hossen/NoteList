@@ -82,20 +82,13 @@ namespace NoteList.ServiceLayer.Services
 
             var roles = await _roleManager.Roles.ToListAsync();
 
-            foreach (IdentityRole<int> role in roles)
+            var userRoles = roles.Select(role => new UserRole()
             {
-                UserRole userRole = new UserRole
-                {
-                    RoleName = role.Name
-                };
+                RoleName = role.Name,
+                IsSelected = existingUserRoles.Any(c => c == role.Name) ? true : false
+            });
 
-                if (existingUserRoles.Any(c => c == role.Name))
-                {
-                    userRole.IsSelected = true;
-                }
-
-                model.Roles.Add(userRole);
-            }
+            model.Roles.AddRange(userRoles);
 
             return model;
         }
@@ -145,37 +138,30 @@ namespace NoteList.ServiceLayer.Services
         {
             var models = new List<RoleClaimViewModel>();
             var roles = await _roleManager.Roles.ToListAsync();
-            foreach (IdentityRole<int> identityRole in roles)
+
+            foreach (var identityRole in roles)
             {
+                var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
+
+                var roleClaims = ClaimsStore.GetAllClaims().Select(claim => new RoleClaim
+                {
+                    ClaimType = claim.Type,
+                    IsSelected = existingRoleClaims.Any(c => c.Type == claim.Type)
+                }).ToList();
+
                 var roleClaimModel = new RoleClaimViewModel
                 {
                     RoleName = identityRole.Name,
-                    RoleClaims = new List<RoleClaim>()
+                    RoleClaims = roleClaims
                 };
-
-
-                var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
-
-                foreach(Claim claim in ClaimsStore.GetAllClaims())
-                {
-                    RoleClaim roleClaim = new RoleClaim
-                    {
-                        ClaimType = claim.Type
-                    };
-
-                    if (existingRoleClaims.Any(c => c.Type == claim.Type))
-                    {
-                        roleClaim.IsSelected = true;
-                    }
-
-                    roleClaimModel.RoleClaims.Add(roleClaim);
-                }
 
                 models.Add(roleClaimModel);
             }
 
             return models;
         }
+
+
 
         #endregion
 
@@ -197,6 +183,7 @@ namespace NoteList.ServiceLayer.Services
             foreach(var model in models)
             {
                 var identityRole = await _roleManager.FindByNameAsync(model.RoleName);
+
                 var allSelectedClaims = model.RoleClaims.Where(c => c.IsSelected)
                 .Select(c => new Claim(c.ClaimType, c.ClaimType))
                 .ToList();

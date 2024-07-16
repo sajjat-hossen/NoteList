@@ -77,22 +77,17 @@ namespace NoteList.ServiceLayer.Services
             };
 
             var userRoles = await _userManager.GetRolesAsync(user);
-            var existingUserRolesClaims = new List<Claim>();
 
-            foreach (var role in userRoles)
+            var existingUserRolesClaims = (await Task.WhenAll(userRoles.Select(async role =>
             {
                 var identityRole = await _roleManager.FindByNameAsync(role);
-                var claims = await _roleManager.GetClaimsAsync(identityRole);
+                return await _roleManager.GetClaimsAsync(identityRole);
+            }))).SelectMany(claims => claims).ToList();
 
-                foreach (var claim in claims)
-                {
-                    existingUserRolesClaims.Add(claim);
-                }
-            }
 
             var existingUserClaims = await GetUserClaimsAsync(user);
 
-            foreach (Claim claim in ClaimsStore.GetAllClaims())
+            var userClaims = ClaimsStore.GetAllClaims().Select(claim =>
             {
                 UserClaim userClaim = new UserClaim
                 {
@@ -110,8 +105,10 @@ namespace NoteList.ServiceLayer.Services
                     userClaim.IsSelected = true;
                 }
 
-                model.Cliams.Add(userClaim);
-            }
+                return userClaim;
+            });
+
+            model.Cliams.AddRange(userClaims);
 
             return model;
         }
