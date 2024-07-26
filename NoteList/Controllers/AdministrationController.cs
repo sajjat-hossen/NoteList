@@ -82,7 +82,6 @@ namespace NoteList.Controllers
         public async Task<IActionResult> UpdateRoleClaims()
         {
             var models = await _administrationService.GetRoleClaimsAsync();
-            var x = 10;
 
             return View(models);
         }

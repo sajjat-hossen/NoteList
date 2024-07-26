@@ -6,7 +6,6 @@ using NoteList.RepositoryLayer.Repositories;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.MappingProfiles;
 using NoteList.ServiceLayer.Services;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
