@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.Models;
@@ -10,6 +11,7 @@ namespace NoteList.Controllers
         #region Fields
 
         private readonly IAccountService _accountService;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(AccountController));
 
         #endregion
 
@@ -28,6 +30,7 @@ namespace NoteList.Controllers
 
         public IActionResult Register()
         {
+            _log.Info("This is register action inside account controller");
             return View();
         }
 
@@ -63,6 +66,7 @@ namespace NoteList.Controllers
 
         public IActionResult Login()
         {
+            _log.Info("This is login action inside account controller");
             return View();
         }
 

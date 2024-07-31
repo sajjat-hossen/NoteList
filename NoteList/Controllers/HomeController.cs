@@ -1,3 +1,4 @@
+using log4net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoteList.Models;
@@ -7,11 +8,11 @@ namespace NoteList.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(HomeController));
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            
         }
 
         public IActionResult Index()
@@ -21,6 +22,7 @@ namespace NoteList.Controllers
 
         public IActionResult Privacy()
         {
+            _log.Info("this is privacy");
             return View();
         }
 

@@ -6,6 +6,8 @@ using NoteList.RepositoryLayer.Repositories;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.MappingProfiles;
 using NoteList.ServiceLayer.Services;
+using System.Reflection;
+using System.Xml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,17 @@ builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITodoListService, TodoListService>();
+
+// log4net configuration
+
+XmlDocument log4netConfig = new XmlDocument();
+log4netConfig.Load(File.OpenRead("log4net.config"));
+log4net.Config.XmlConfigurator.Configure(log4net.LogManager.GetRepository(Assembly.GetEntryAssembly()), log4netConfig["log4net"]);
+
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 var app = builder.Build();
 
