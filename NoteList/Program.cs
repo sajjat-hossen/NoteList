@@ -83,6 +83,7 @@ builder.Services.AddTransient<IValidator<LoginViewModel>, LoginValidator>();
 builder.Services.AddTransient<IValidator<RegisterViewModel>, RegisterValidator>();
 builder.Services.AddTransient<IValidator<ChangePasswordViewModel>, ChangePasswordValidator>();
 builder.Services.AddTransient<IValidator<CreateRole>, CreateRoleValidator>();
+builder.Services.AddTransient<IValidator<NoteViewModel>, NoteValidator>();
 
 var app = builder.Build();
 

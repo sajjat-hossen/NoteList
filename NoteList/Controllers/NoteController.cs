@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.Models;
+using NoteList.ServiceLayer.ValidatorModels;
 
 namespace NoteList.Controllers
 {
@@ -49,7 +50,10 @@ namespace NoteList.Controllers
         [Authorize(Policy = "CreateNotePolicy")]
         public async Task<IActionResult> Create(NoteViewModel note)
         {
-            if (ModelState.IsValid)
+            NoteValidator validator = new NoteValidator();
+            var validationResult = validator.Validate(note);
+
+            if (validationResult.IsValid)
             {
                 await _noteService.CreateNoteAsync(note);
 
@@ -130,7 +134,10 @@ namespace NoteList.Controllers
 
         public async Task<IActionResult> Edit(NoteViewModel note)
         {
-            if (ModelState.IsValid)
+            NoteValidator validator = new NoteValidator();
+            var validationResult = validator.Validate(note);
+
+            if (validationResult.IsValid)
             {
                 await _noteService.UpdateNoteAsync(note);
 

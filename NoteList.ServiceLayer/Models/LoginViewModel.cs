@@ -6,6 +6,7 @@ namespace NoteList.ServiceLayer.Models
     {
         public string Email { get; set; }
 
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Display(Name = "Remember Me")]
