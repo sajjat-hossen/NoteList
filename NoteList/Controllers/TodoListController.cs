@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.Models;
+using NoteList.ServiceLayer.ValidatorModels;
 
 namespace NoteList.Controllers
 {
@@ -51,7 +52,10 @@ namespace NoteList.Controllers
 
         public async Task<IActionResult> Create(TodoListViewModel model)
         {
-            if (ModelState.IsValid)
+            TodoListValidator validator = new TodoListValidator();
+            var validationResult = validator.Validate(model);
+
+            if (validationResult.IsValid)
             {
                 await _todoListService.CreateTodoListAsync(model);
 
@@ -132,7 +136,10 @@ namespace NoteList.Controllers
 
         public async Task<IActionResult> Edit(TodoListViewModel model)
         {
-            if (ModelState.IsValid)
+            TodoListValidator validator = new TodoListValidator();
+            var validationResult = validator.Validate(model);
+
+            if (validationResult.IsValid)
             {
                 await _todoListService.UpdateTodoListAsync(model);
 
