@@ -12,6 +12,18 @@ using System.Xml;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// log4net services setup
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddEventLog();
+
+XmlDocument log4netConfig = new XmlDocument();
+log4netConfig.Load(File.OpenRead("log4net.config"));
+log4net.Config.XmlConfigurator.Configure(log4net.LogManager.GetRepository(Assembly.GetEntryAssembly()), log4netConfig["log4net"]);
+
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -58,17 +70,6 @@ builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITodoListService, TodoListService>();
-
-// log4net configuration
-
-XmlDocument log4netConfig = new XmlDocument();
-log4netConfig.Load(File.OpenRead("log4net.config"));
-log4net.Config.XmlConfigurator.Configure(log4net.LogManager.GetRepository(Assembly.GetEntryAssembly()), log4netConfig["log4net"]);
-
-// Configure logging
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
 
 var app = builder.Build();
 
