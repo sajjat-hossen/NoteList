@@ -1,7 +1,10 @@
-﻿namespace NoteList.DomainLayer.Models
+﻿using System.ComponentModel;
+
+namespace NoteList.DomainLayer.Models
 {
     public class CreateRole
     {
-        public string RoleName { get; set; }
+        [DisplayName("Role Name")]
+        public string? RoleName { get; set; }
     }
 }

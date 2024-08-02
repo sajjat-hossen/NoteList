@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NoteList.DomainLayer.Data;
+using NoteList.DomainLayer.Models;
 using NoteList.RepositoryLayer.IRepositories;
 using NoteList.RepositoryLayer.Repositories;
 using NoteList.ServiceLayer.IServices;
@@ -81,6 +82,7 @@ builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddTransient<IValidator<LoginViewModel>, LoginValidator>();
 builder.Services.AddTransient<IValidator<RegisterViewModel>, RegisterValidator>();
 builder.Services.AddTransient<IValidator<ChangePasswordViewModel>, ChangePasswordValidator>();
+builder.Services.AddTransient<IValidator<CreateRole>, CreateRoleValidator>();
 
 var app = builder.Build();
 

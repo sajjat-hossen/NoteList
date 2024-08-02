@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NoteList.DomainLayer.Models;
 using NoteList.ServiceLayer.IServices;
+using NoteList.ServiceLayer.ValidatorModels;
 
 namespace NoteList.Controllers
 {
@@ -44,7 +45,10 @@ namespace NoteList.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateRole model)
         {
-            if (ModelState.IsValid)
+            CreateRoleValidator validator = new CreateRoleValidator();
+            var validationResult = validator.Validate(model);
+
+            if (validationResult.IsValid)
             {
                 var result = await _roleService.CreateRoleAsync(model);
 
@@ -54,7 +58,7 @@ namespace NoteList.Controllers
                 }
             }
 
-            return View();
+            return View(model);
         }
 
         #endregion

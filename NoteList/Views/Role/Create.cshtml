@@ -15,3 +15,9 @@
     <button type="submit" class="btn btn-primary mt-2">Create</button>
     <a asp-action="Index" class="btn btn-secondary mt-2" style="width:auto">Cancel</a>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
