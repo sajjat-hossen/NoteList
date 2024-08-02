@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NoteList.DomainLayer.Data;
@@ -5,7 +7,9 @@ using NoteList.RepositoryLayer.IRepositories;
 using NoteList.RepositoryLayer.Repositories;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.MappingProfiles;
+using NoteList.ServiceLayer.Models;
 using NoteList.ServiceLayer.Services;
+using NoteList.ServiceLayer.ValidatorModels;
 using System.Reflection;
 using System.Xml;
 
@@ -70,6 +74,13 @@ builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITodoListService, TodoListService>();
+
+// FluentValidator
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddTransient<IValidator<LoginViewModel>, LoginValidator>();
+builder.Services.AddTransient<IValidator<RegisterViewModel>, RegisterValidator>();
+builder.Services.AddTransient<IValidator<ChangePasswordViewModel>, ChangePasswordValidator>();
 
 var app = builder.Build();
 

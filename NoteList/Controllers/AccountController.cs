@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.Models;
+using NoteList.ServiceLayer.ValidatorModels;
 
 namespace NoteList.Controllers
 {
@@ -38,7 +39,10 @@ namespace NoteList.Controllers
 
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            RegisterValidator validator = new RegisterValidator();
+            var validationResult = validator.Validate(model);
+
+            if (validationResult.IsValid)
             {
                 var result = await _accountService.CreateAccountAsync(model);
 
@@ -75,7 +79,10 @@ namespace NoteList.Controllers
 
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            LoginValidator validator = new LoginValidator();
+            var validationResult = validator.Validate(model);
+
+            if (validationResult.IsValid)
             {
                 var result = await _accountService.PasswordSignInAccountAsync(model);
 
@@ -118,7 +125,10 @@ namespace NoteList.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            ChangePasswordValidator validator = new ChangePasswordValidator();
+            var validationResult = validator.Validate(model);
+
+            if (!validationResult.IsValid)
             {
                 return View(model);
             }
