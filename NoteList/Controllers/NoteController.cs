@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.Models;
 using NoteList.ServiceLayer.ValidatorModels;
+using System.Threading.Tasks;
 
 namespace NoteList.Controllers
 {
@@ -29,8 +30,7 @@ namespace NoteList.Controllers
         [Authorize(Policy = "ViewNotePolicy")]
         public async Task<IActionResult> Index()
         {
-            var notes = await  _noteService.GetAllNoteAsync();
-
+            var notes = await _noteService.GetAllNoteAsync();
             return View(notes);
         }
 
@@ -38,113 +38,69 @@ namespace NoteList.Controllers
 
         #region Create
 
-        [HttpGet]
-        [Authorize(Policy = "CreateNotePolicy")]
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         [Authorize(Policy = "CreateNotePolicy")]
         public async Task<IActionResult> Create(NoteViewModel note)
         {
-            NoteValidator validator = new NoteValidator();
-            var validationResult = validator.Validate(note);
-
-            if (validationResult.IsValid)
+            if (ModelState.IsValid)
             {
                 await _noteService.CreateNoteAsync(note);
-
-                return RedirectToAction("Index");
+                return Ok();  // Return success status for AJAX call
             }
 
-            return View();
+            return BadRequest(ModelState);  // Return validation errors
         }
 
         #endregion
 
-        #region Delete
+        #region Get Note
 
         [HttpGet]
-        [Authorize(Policy = "DeleteNotePolicy")]
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
-            var note = _noteService.MapNoteToNoteViewModel(await _noteService.GetNoteByIdAsync(id));
-
-            if (note == null)
-            {
-                return NotFound();
-            }
-
-            return View(note);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [Authorize(Policy = "DeleteNotePolicy")]
-
-        public async Task<IActionResult> DeleteConfirm(int id)
+        public async Task<IActionResult> GetNote(int id)
         {
             var note = await _noteService.GetNoteByIdAsync(id);
-
             if (note == null)
             {
                 return NotFound();
             }
 
-            await _noteService.RemoveNoteAsync(note);
-
-            return RedirectToAction("Index");
-
+            var noteViewModel = _noteService.MapNoteToNoteViewModel(note);
+            return Json(noteViewModel);
         }
 
         #endregion
 
         #region Edit
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Policy = "EditNotePolicy")]
-
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(NoteViewModel note)
         {
-            if (id == 0)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                await _noteService.UpdateNoteAsync(note);
+                return Ok();  // Return success status for AJAX call
             }
 
-            var note = _noteService.MapNoteToNoteViewModel (await _noteService.GetNoteByIdAsync(id));
+            return BadRequest(ModelState);  // Return validation errors
+        }
 
+        #endregion
+
+        #region Delete
+
+        [HttpPost]
+        [Authorize(Policy = "DeleteNotePolicy")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var note = await _noteService.GetNoteByIdAsync(id);
             if (note == null)
             {
                 return NotFound();
             }
 
-            return View(note);
-        }
-
-        [HttpPost]
-        [Authorize(Policy = "EditNotePolicy")]
-
-        public async Task<IActionResult> Edit(NoteViewModel note)
-        {
-            NoteValidator validator = new NoteValidator();
-            var validationResult = validator.Validate(note);
-
-            if (validationResult.IsValid)
-            {
-                await _noteService.UpdateNoteAsync(note);
-
-                return RedirectToAction("Index");
-            }
-
-            return View();
+            await _noteService.RemoveNoteAsync(note);
+            return Ok();  // Return success status for AJAX call
         }
 
         #endregion
