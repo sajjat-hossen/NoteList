@@ -36,12 +36,6 @@ namespace NoteList.Controllers
 
         #region Create
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<IActionResult> Create(CreateRole model)
         {
@@ -54,17 +48,18 @@ namespace NoteList.Controllers
 
                 if (result == true)
                 {
-                    return RedirectToAction("Index");
+                    return Ok();
                 }
             }
 
-            return View(model);
+            return BadRequest(ModelState);
         }
 
         #endregion
 
         #region Delete
 
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             if (id == 0)
@@ -74,7 +69,7 @@ namespace NoteList.Controllers
 
             await _roleService.DeleteRoleAsync(id);
 
-            return RedirectToAction("Index");
+            return Ok();
         }
 
         #endregion
