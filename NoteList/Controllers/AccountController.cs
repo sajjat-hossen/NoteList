@@ -27,14 +27,6 @@ namespace NoteList.Controllers
 
         #region Register
 
-        [HttpGet]
-
-        public IActionResult Register()
-        {
-            _log.Info("This is register action inside account controller");
-            return View();
-        }
-
         [HttpPost]
 
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -50,29 +42,23 @@ namespace NoteList.Controllers
                 {
                      await _accountService.SignInAccountAsync(model);
 
-                    return RedirectToAction("index", "home");
+                    return Ok();
                 }
 
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+
+                return BadRequest(ModelState);
             }
 
-            return View(model);
+            return BadRequest(ModelState);
         }
 
         #endregion
 
         #region Login
-
-        [HttpGet]
-
-        public IActionResult Login()
-        {
-            _log.Info("This is login action inside account controller");
-            return View();
-        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -88,15 +74,16 @@ namespace NoteList.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    return Ok();
                 }
                 
                 // Handle failure
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View(model);
+
+                return BadRequest(ModelState);
             }
 
-            return View(model);
+            return BadRequest(ModelState);
         }
 
         #endregion
