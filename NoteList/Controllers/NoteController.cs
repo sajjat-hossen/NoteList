@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using NoteList.ServiceLayer.IServices;
 using NoteList.ServiceLayer.Models;
 using NoteList.ServiceLayer.ValidatorModels;
-using System.Threading.Tasks;
 
 namespace NoteList.Controllers
 {
@@ -42,18 +41,21 @@ namespace NoteList.Controllers
         [Authorize(Policy = "CreateNotePolicy")]
         public async Task<IActionResult> Create(NoteViewModel note)
         {
-            if (ModelState.IsValid)
+            NoteValidator validator = new NoteValidator();
+            var validationResult = validator.Validate(note);
+
+            if (validationResult.IsValid)
             {
                 await _noteService.CreateNoteAsync(note);
-                return Ok();  // Return success status for AJAX call
+                return Ok();
             }
 
-            return BadRequest(ModelState);  // Return validation errors
+            return BadRequest(ModelState);
         }
 
         #endregion
 
-        #region Get Note
+        #region GetNote
 
         [HttpGet]
         public async Task<IActionResult> GetNote(int id)
@@ -76,13 +78,16 @@ namespace NoteList.Controllers
         [Authorize(Policy = "EditNotePolicy")]
         public async Task<IActionResult> Edit(NoteViewModel note)
         {
-            if (ModelState.IsValid)
+            NoteValidator validator = new NoteValidator();
+            var validationResult = validator.Validate(note);
+
+            if (validationResult.IsValid)
             {
                 await _noteService.UpdateNoteAsync(note);
-                return Ok();  // Return success status for AJAX call
+                return Ok();
             }
 
-            return BadRequest(ModelState);  // Return validation errors
+            return BadRequest(ModelState);
         }
 
         #endregion
@@ -100,7 +105,7 @@ namespace NoteList.Controllers
             }
 
             await _noteService.RemoveNoteAsync(note);
-            return Ok();  // Return success status for AJAX call
+            return Ok();
         }
 
         #endregion
