@@ -48,7 +48,13 @@
                         @if (User.IsInRole("SuperAdmin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">AccountManage</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">Account-Manage</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Role-Manage</a>
                             </li>
                         }
                     </ul>
