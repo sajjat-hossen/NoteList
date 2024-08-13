@@ -39,14 +39,6 @@ namespace NoteList.Controllers
 
         #region Create
 
-        [HttpGet]
-        [Authorize(Policy = "CreateTodoListPolicy")]
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         [Authorize(Policy = "CreateTodoListPolicy")]
 
@@ -59,40 +51,38 @@ namespace NoteList.Controllers
             {
                 await _todoListService.CreateTodoListAsync(model);
 
-                return RedirectToAction("Index");
+                return Ok();
             }
 
-            return View();
+            return BadRequest(ModelState);
+        }
+
+        #endregion
+
+        #region GetTodoList
+
+        [HttpGet]
+        public async Task<IActionResult> GetTodoList(int id)
+        {
+            var todoList = await _todoListService.GetTodoListByIdAsync(id);
+            if (todoList == null)
+            {
+                return NotFound();
+            }
+
+            var noteViewModel = _todoListService.MapTodoListToTodoListViewModel(todoList);
+
+            return Json(noteViewModel);
         }
 
         #endregion
 
         #region Delete
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Policy = "DeleteTodoListPolicy")]
 
         public async Task<IActionResult> Delete(int id)
-        {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
-            var todoList = _todoListService.MapTodoListToTodoListViewModel(await _todoListService.GetTodoListByIdAsync(id));
-
-            if (todoList == null)
-            {
-                return NotFound();
-            }
-
-            return View(todoList);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [Authorize(Policy = "DeleteTodoListPolicy")]
-
-        public async Task<IActionResult> DeleteConfirm(int id)
         {
             var todoList = await _todoListService.GetTodoListByIdAsync(id);
 
@@ -103,33 +93,13 @@ namespace NoteList.Controllers
 
             await _todoListService.RemoveTodoListAsync(todoList);
 
-            return RedirectToAction("Index");
+            return Ok();
 
         }
 
         #endregion
 
         #region Edit
-
-        [HttpGet]
-        [Authorize(Policy = "EditTodoListPolicy")]
-
-        public async Task<IActionResult> Edit(int id)
-        {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
-            var todoList = _todoListService.MapTodoListToTodoListViewModel(await _todoListService.GetTodoListByIdAsync(id));
-
-            if (todoList == null)
-            {
-                return NotFound();
-            }
-
-            return View(todoList);
-        }
 
         [HttpPost]
         [Authorize(Policy = "EditTodoListPolicy")]
@@ -143,10 +113,10 @@ namespace NoteList.Controllers
             {
                 await _todoListService.UpdateTodoListAsync(model);
 
-                return RedirectToAction("Index");
+                return Ok();
             }
 
-            return View();
+            return BadRequest(ModelState);
         }
 
         #endregion
