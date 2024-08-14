@@ -31,6 +31,7 @@
         <div class="row border-bottom py-2 @(index % 2 == 0 ? "bg-light" : "bg-white") text-center">
             <div class="col-md-6">@role.Name</div>
             <div class="col-md-6">
+                <button class="btn btn-primary btn-sm" onclick="showClaimsUpdateModal(@role.Id)">Claims Update</button>
                 <button class="btn btn-danger btn-sm" onclick="showDeleteModal(@role.Id)">Delete</button>
             </div>
         </div>
@@ -53,6 +54,31 @@
                         <input type="text" class="form-control" id="roleName" name="RoleName" required />
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Claims Update Modal -->
+
+<div class="modal fade" id="claimsUpdateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="claimsUpdateForm">
+                    <input type="hidden" id="editId" name="Id" />
+                    <input type="hidden" id="editRoleName" name="RoleName" />
+                    <ul class="list-group" id="roleClaimsList">
+                        <!-- Claims will be populated dynamically here -->
+                    </ul>
+                    
+                    <button type="submit" class="btn btn-primary">Update</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </form>
             </div>
@@ -106,6 +132,58 @@
         var id = $('#deleteRoleId').val();
         $.post('/Role/Delete', { id: id }, function () {
             $('#deleteModal').modal('hide');
+            location.reload();
+        }).fail(function (xhr) {
+            alert('Error: ' + xhr.responseText);
+        });
+    });
+
+    function showClaimsUpdateModal(id) {
+        $.get('/Administration/GetRoleClaimsById', { id: id }, function (data) {
+            $('#editId').val(data.id);
+            $('#editRoleName').val(data.roleName);
+            $('#modalTitle').text('Edit Claims for ' + data.roleName);
+
+            let roleClaimsList = $('#roleClaimsList');
+            roleClaimsList.empty(); // Clear the existing list
+
+            data.roleClaims.forEach(function (claim, index) {
+                let listItem = `
+                        <div class="form-check m-1">
+                            <input type="hidden" name="RoleClaims[${index}].ClaimType" value="${claim.claimType}" />
+                            <input class="form-check-input" type="checkbox" name="RoleClaims[${index}].IsSelected" ${claim.isSelected ? 'checked' : ''} />
+                            <label class="form-check-label">
+                                ${claim.claimType}
+                            </label>
+                        </div>`;
+                roleClaimsList.append(listItem);
+            });
+
+            $('#claimsUpdateModal').modal('show');
+        });
+    }
+
+    $('#claimsUpdateForm').on('submit', function (e) {
+        e.preventDefault();
+
+        // Manually adjust the form data
+        let formDataArray = $(this).serializeArray();
+        let formDataObject = {};
+
+        formDataArray.forEach(function (field) {
+            if (field.name.endsWith('.IsSelected')) {
+                // Convert the checkbox value from "on" to true
+                formDataObject[field.name] = field.value === "on" ? true : false;
+            } else {
+                formDataObject[field.name] = field.value;
+            }
+        });
+
+        // Convert the adjusted form data to query string format
+        let adjustedFormData = $.param(formDataObject);
+
+        $.post('/Administration/UpdateRoleClaims', adjustedFormData, function () {
+            $('#claimsUpdateModal').modal('hide');
             location.reload();
         }).fail(function (xhr) {
             alert('Error: ' + xhr.responseText);

@@ -78,25 +78,24 @@ namespace NoteList.Controllers
         #region UpdateRoleClaims
 
         [HttpGet]
-
-        public async Task<IActionResult> UpdateRoleClaims()
+        public async Task<IActionResult> GetRoleClaimsById(int id)
         {
-            var models = await _administrationService.GetRoleClaimsAsync();
+            var model = await _administrationService.GetRoleClaimsAsync(id);
 
-            return View(models);
+            return Json(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateRoleClaims(List<RoleClaimViewModel> models)
+        public async Task<IActionResult> UpdateRoleClaims(RoleClaimViewModel model)
         {
-            var result = await _administrationService.UpdateRoleClaimsAsync(models);
+            var result = await _administrationService.UpdateRoleClaimsAsync(model);
 
             if (result == false)
             {
-                return View(models);
+                return BadRequest(model);
             }
 
-            return RedirectToAction("index");
+            return Ok();
         }
 
         #endregion

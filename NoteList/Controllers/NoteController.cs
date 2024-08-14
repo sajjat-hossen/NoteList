@@ -67,6 +67,7 @@ namespace NoteList.Controllers
             }
 
             var noteViewModel = _noteService.MapNoteToNoteViewModel(note);
+
             return Json(noteViewModel);
         }
 

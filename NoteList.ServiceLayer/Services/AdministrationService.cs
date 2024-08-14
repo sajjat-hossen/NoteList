@@ -134,31 +134,26 @@ namespace NoteList.ServiceLayer.Services
 
         #region GetRoleClaimsAsync
 
-        public async Task<List<RoleClaimViewModel>> GetRoleClaimsAsync()
+        public async Task<RoleClaimViewModel> GetRoleClaimsAsync(int id)
         {
-            var models = new List<RoleClaimViewModel>();
-            var roles = await _roleManager.Roles.ToListAsync();
+            var role = await _roleManager.FindByIdAsync(id.ToString());
 
-            foreach (var identityRole in roles)
+            var existingRoleClaims = await _roleManager.GetClaimsAsync(role);
+
+            var roleClaims = ClaimsStore.GetAllClaims().Select(claim => new RoleClaim
             {
-                var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
+                ClaimType = claim.Type,
+                IsSelected = existingRoleClaims.Any(c => c.Type == claim.Type)
+            }).ToList();
 
-                var roleClaims = ClaimsStore.GetAllClaims().Select(claim => new RoleClaim
-                {
-                    ClaimType = claim.Type,
-                    IsSelected = existingRoleClaims.Any(c => c.Type == claim.Type)
-                }).ToList();
+            var roleClaimModel = new RoleClaimViewModel
+            {
+                Id = id,
+                RoleName = role.Name,
+                RoleClaims = roleClaims
+            };
 
-                var roleClaimModel = new RoleClaimViewModel
-                {
-                    RoleName = identityRole.Name,
-                    RoleClaims = roleClaims
-                };
-
-                models.Add(roleClaimModel);
-            }
-
-            return models;
+            return roleClaimModel;
         }
 
 
@@ -167,31 +162,24 @@ namespace NoteList.ServiceLayer.Services
 
         #region UpdateRoleClaimsAsync
 
-        public async Task<bool> UpdateRoleClaimsAsync(List<RoleClaimViewModel> models)
+        public async Task<bool> UpdateRoleClaimsAsync(RoleClaimViewModel model)
         {
-            var roles = await _roleManager.Roles.ToListAsync();
-            foreach (IdentityRole<int> identityRole in roles)
-            {
-                var existingRoleClaims = await _roleManager.GetClaimsAsync(identityRole);
+            var role = await _roleManager.FindByIdAsync(model.Id.ToString());
 
-                foreach(Claim claim in existingRoleClaims)
-                {
-                    await _roleManager.RemoveClaimAsync(identityRole, claim);
-                }
+            var existingRoleClaims = await _roleManager.GetClaimsAsync(role);
+
+            foreach (Claim claim in existingRoleClaims)
+            {
+                await _roleManager.RemoveClaimAsync(role, claim);
             }
 
-            foreach(var model in models)
+            var allSelectedClaims = model.RoleClaims.Where(c => c.IsSelected)
+            .Select(c => new Claim(c.ClaimType, c.ClaimType))
+            .ToList();
+
+            foreach (var claim in allSelectedClaims)
             {
-                var identityRole = await _roleManager.FindByNameAsync(model.RoleName);
-
-                var allSelectedClaims = model.RoleClaims.Where(c => c.IsSelected)
-                .Select(c => new Claim(c.ClaimType, c.ClaimType))
-                .ToList();
-
-                foreach(var claim in allSelectedClaims)
-                {
-                    await _roleManager.AddClaimAsync(identityRole, claim);
-                }
+                await _roleManager.AddClaimAsync(role, claim);
             }
 
             return true;
