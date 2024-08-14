@@ -101,7 +101,7 @@ namespace NoteList.ServiceLayer.Services
 
                 if (existingUserRolesClaims.Any(c => c.Type == claim.Type))
                 {
-                    userClaim.isRoleClaimed = true;
+                    userClaim.IsRoleClaimed = true;
                     userClaim.IsSelected = true;
                 }
 

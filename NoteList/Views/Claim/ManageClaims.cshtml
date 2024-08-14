@@ -24,7 +24,7 @@
                         <div class="form-check m-1">
                             <input type="hidden" asp-for="@Model.Cliams[i].ClaimType" />
                             
-                            @if (Model.Cliams[i].isRoleClaimed == true)
+                            @if (Model.Cliams[i].IsRoleClaimed == true)
                             {
                                 <input asp-for="@Model.Cliams[i].IsSelected" class="form-check-input" disabled />
                             }

@@ -34,43 +34,47 @@ namespace NoteList.Controllers
 
         #endregion
 
-        #region ManagePermissions
+        #region GetUserClaims
 
         [HttpGet]
 
-        public async Task<IActionResult> ManageClaims(int id)
+        public async Task<IActionResult> GetUserClaims(int id)
         {
             var user = await _claimService.FindUserByIdAsync(id);
 
             if (user == null)
             {
-                return View("NotFound");
+                return NotFound();
             }
 
             var model = await _claimService.GetUserClaimsModel(user);
 
-            return View(model);
+            return Json(model);
         }
+
+        #endregion
+
+        #region UpdateUserClaims
 
         [HttpPost]
 
-        public async Task<IActionResult> ManageClaims(UserClaimViewModel model)
+        public async Task<IActionResult> UpdateUserClaims(UserClaimViewModel model)
         {
             var user = await _claimService.FindUserByIdAsync(model.Id);
 
             if (user == null)
             {
-                return View("NotFound");
+                return NotFound(model);
             }
 
             var result = await _claimService.UpdateUserClaimsAsync(model);
 
             if (result == false)
             {
-                return View(model);
+                return BadRequest(model);
             }
 
-            return RedirectToAction("index");
+            return Ok();
         }
 
         #endregion
