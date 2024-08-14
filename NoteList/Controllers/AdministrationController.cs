@@ -34,43 +34,47 @@ namespace NoteList.Controllers
 
         #endregion
 
-        #region ManageRoles
+        #region GetUserRoles
 
         [HttpGet]
 
-        public async Task<IActionResult> ManageRoles(int id)
+        public async Task<IActionResult> GetUserRoles(int id)
         {
             var user = await _administrationService.FindUserByIdAsync(id);
 
             if (user == null)
             {
-                return View("NotFound");
+                return NotFound();
             }
 
             var model = await _administrationService.GetUserRolesModel(user);
 
-            return View(model);
+            return Json(model);
         }
+
+        #endregion
+
+        #region UpdateUserRoles
 
         [HttpPost]
 
-        public async Task<IActionResult> ManageRoles(UserRoleViewModel model)
+        public async Task<IActionResult> UpdateUserRoles(UserRoleViewModel model)
         {
             var user = await _administrationService.FindUserByIdAsync(model.Id);
 
             if (user == null)
             {
-                return View("NotFound");
+                return NotFound();
             }
 
             var result = await _administrationService.UpdateUserRolesAsync(model);
 
             if (result == false)
             {
-                return View(model);
+                return BadRequest(model);
             }
 
-            return RedirectToAction("index");
+            return Ok();
         }
 
         #endregion
