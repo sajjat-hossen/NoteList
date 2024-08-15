@@ -4,21 +4,29 @@ namespace NoteList.Models
 {
     public static class ClaimsStore
     {
+        private static readonly Dictionary<string, string[]> _claimsDictionary = new Dictionary<string, string[]>
+    {
+        { "Note", new[] { "Create", "Edit", "Delete", "View" } },
+        { "TodoList", new[] { "Create", "Edit", "Delete", "View" } },
+    };
+
         public static List<Claim> GetAllClaims()
         {
-            return new List<Claim>()
-            {
-                // Initializes a new instance of the Claim class with the specified claim type, and value.
-                new Claim("Create Note", "Create Note"),
-                new Claim("Edit Note", "Edit Note"),
-                new Claim("Delete Note", "Delete Note"),
-                new Claim("View Note", "View Note"),
+            var claims = new List<Claim>();
 
-                new Claim("Create TodoList", "Create TodoList"),
-                new Claim("Edit TodoList", "Edit TodoList"),
-                new Claim("Delete TodoList", "Delete TodoList"),
-                new Claim("View TodoList", "View TodoList")
-            };
+            foreach (var controller in _claimsDictionary)
+            {
+                string controllerName = controller.Key;
+                string[] actions = controller.Value;
+
+                foreach (var action in actions)
+                {
+                    string claimType = $"{action} {controllerName}";
+                    claims.Add(new Claim(claimType, claimType));
+                }
+            }
+
+            return claims;
         }
     }
 }
