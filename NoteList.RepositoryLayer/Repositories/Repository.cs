@@ -47,6 +47,7 @@ namespace NoteList.RepositoryLayer.Repositories
         public async Task<TEntity> GetEntityByIdAsync(Expression<Func<TEntity, bool>> filters)
         {
             var query = _dbSet.Where(filters);
+
             return await query.FirstOrDefaultAsync();
         }
 

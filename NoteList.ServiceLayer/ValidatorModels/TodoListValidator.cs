@@ -8,8 +8,8 @@ namespace NoteList.ServiceLayer.ValidatorModels
         public TodoListValidator()
         {
             RuleFor(todo => todo.Title)
-            .NotEmpty().WithMessage("Title is required.")
-            .MaximumLength(100).WithMessage("Title cannot exceed 100 characters.");
+                .NotEmpty().WithMessage("Title is required.")
+                .MaximumLength(100).WithMessage("Title cannot exceed 100 characters.");
 
             RuleFor(todo => todo.Description)
                 .NotEmpty().WithMessage("Description is required.")

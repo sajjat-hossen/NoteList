@@ -8,8 +8,8 @@ namespace NoteList.ServiceLayer.ValidatorModels
         public NoteValidator()
         {
             RuleFor(note => note.Title)
-            .NotEmpty().WithMessage("Title is required.")
-            .MaximumLength(100).WithMessage("Title cannot exceed 100 characters.");
+                .NotEmpty().WithMessage("Title is required.")
+                .MaximumLength(100).WithMessage("Title cannot exceed 100 characters.");
 
             RuleFor(note => note.Description)
                 .NotEmpty().WithMessage("Description is required.")

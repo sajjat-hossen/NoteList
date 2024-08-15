@@ -29,6 +29,7 @@ namespace NoteList.Controllers
         public async Task<IActionResult> Index()
         {
             var roles = await _roleService.GetAllRoles();
+
             return View(roles);
         }
 
@@ -37,6 +38,7 @@ namespace NoteList.Controllers
         #region Create
 
         [HttpPost]
+
         public async Task<IActionResult> Create(CreateRole model)
         {
             CreateRoleValidator validator = new CreateRoleValidator();
@@ -60,6 +62,7 @@ namespace NoteList.Controllers
         #region Delete
 
         [HttpPost]
+
         public async Task<IActionResult> Delete(int id)
         {
             if (id == 0)

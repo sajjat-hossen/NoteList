@@ -82,6 +82,7 @@ namespace NoteList.Controllers
         #region UpdateRoleClaims
 
         [HttpGet]
+
         public async Task<IActionResult> GetRoleClaimsById(int id)
         {
             var model = await _administrationService.GetRoleClaimsAsync(id);
@@ -90,6 +91,7 @@ namespace NoteList.Controllers
         }
 
         [HttpPost]
+
         public async Task<IActionResult> UpdateRoleClaims(RoleClaimViewModel model)
         {
             var result = await _administrationService.UpdateRoleClaimsAsync(model);

@@ -20,7 +20,6 @@
         </div>
     </div>
     <h2 class="mb-4 text-center">User List</h2>
-
     <div class="row mb-3 text-center">
         <div class="col-md-4"><strong>User Name</strong></div>
         <div class="col-md-4"><strong>Email</strong></div>
@@ -57,7 +56,6 @@
                     <ul class="list-group" id="crolesList">
                         <!-- Claims will be populated dynamically here -->
                     </ul>
-
                     <button type="submit" class="btn btn-warning mt-2">Update</button>
                     <button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Cancel</button>
                 </form>
@@ -103,7 +101,6 @@
 
         formDataArray.forEach(function (field) {
             if (field.name.endsWith('.IsSelected')) {
-                // Convert the checkbox value from "on" to true
                 formDataObject[field.name] = field.value === "on" ? true : false;
             } else {
                 formDataObject[field.name] = field.value;

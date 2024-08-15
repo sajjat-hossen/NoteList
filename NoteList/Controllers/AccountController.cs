@@ -77,7 +77,6 @@ namespace NoteList.Controllers
                     return Ok();
                 }
                 
-                // Handle failure
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 
                 return BadRequest(ModelState);
@@ -104,6 +103,7 @@ namespace NoteList.Controllers
         #region ChangePassword
 
         [HttpGet]
+
         public IActionResult ChangePassword()
         {
             return View();

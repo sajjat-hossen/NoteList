@@ -62,9 +62,11 @@ namespace NoteList.Controllers
         #region GetTodoList
 
         [HttpGet]
+
         public async Task<IActionResult> GetTodoList(int id)
         {
             var todoList = await _todoListService.GetTodoListByIdAsync(id);
+
             if (todoList == null)
             {
                 return NotFound();

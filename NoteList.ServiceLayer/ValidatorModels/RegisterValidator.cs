@@ -16,8 +16,8 @@ namespace NoteList.ServiceLayer.ValidatorModels
                 .Length(8, 20).WithMessage("Password must be between 8 and 20 characters.");
 
             RuleFor(x => x.ConfirmPassword)
-            .NotEmpty().WithMessage("Confirm Password is required.")
-            .Equal(x => x.Password).WithMessage("Password and confirmation password do not match.");
+                .NotEmpty().WithMessage("Confirm Password is required.")
+                .Equal(x => x.Password).WithMessage("Password and confirmation password do not match.");
         }
     }
 }

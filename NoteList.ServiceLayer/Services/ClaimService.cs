@@ -81,6 +81,7 @@ namespace NoteList.ServiceLayer.Services
             var existingUserRolesClaims = (await Task.WhenAll(userRoles.Select(async role =>
             {
                 var identityRole = await _roleManager.FindByNameAsync(role);
+
                 return await _roleManager.GetClaimsAsync(identityRole);
             }))).SelectMany(claims => claims).ToList();
 
